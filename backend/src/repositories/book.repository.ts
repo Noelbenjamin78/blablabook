@@ -19,3 +19,17 @@ export const getOneBookById = async (id: number): Promise<Book | null> => {
   `, [id]);
   return result.rows[0] || null;
 };
+
+export const searchBooksByTitle = async (title: string): Promise<Book[]> => {
+  const result = await db.query(
+    `
+    SELECT b.*, g.name AS genre_name
+    FROM book b
+    LEFT JOIN genre g ON b.genre_id = g.id
+    WHERE b.title ILIKE $1
+    LIMIT 10
+    `,
+    [`%${title}%`]
+  );
+  return result.rows;
+};
