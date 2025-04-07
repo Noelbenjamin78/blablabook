@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import './db'; 
-/* import booksRoutes from './routes/books.routes'; */
+import booksRoutes from './routes/books.routes';
 
 const app = express();
 
@@ -10,6 +10,6 @@ app.use(cors({
   }));
 app.use(express.json());
 
-/* app.use('/api/books', booksRoutes); */
+app.use('/books', booksRoutes);
 
 export default app;
