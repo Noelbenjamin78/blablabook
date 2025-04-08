@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { addToLibrary, removeFromLibrary, updateLibraryStatus } from '../repositories/library.repository';
+import { addToLibrary, removeFromLibrary, updateLibraryStatus, getLibraryByUser } from '../repositories/library.repository';
 
 export const createLibraryEntry = async (req: Request, res: Response): Promise<void> => {
   const { user_id, book_id } = req.body;
@@ -60,5 +60,33 @@ export const updateLibraryEntryStatus = async (req: Request, res: Response): Pro
     res.status(200).json({ message: `Statut mis à jour pour l'entrée id : ${id}` });
   } catch (err) {
     res.status(500).json({ error: 'Erreur lors de la mise à jour du statut' });
+  }
+};
+
+export const getUserLibraryEntries = async (req: Request, res: Response): Promise<void> => {
+  const userId = parseInt(req.params.userId, 10);
+  const statusQuery = req.query.status;
+
+  if (isNaN(userId)) {
+    res.status(400).json({ error: 'Paramètre userId invalide' });
+    return;
+  }
+
+  // handle status if provided as a query parameter in the request URL
+  let status: number | undefined;
+  if (statusQuery === 'read') {
+      status = 1
+  } else if (statusQuery === 'toread') {
+      status = 0;
+  } else if (statusQuery !== null && statusQuery !== undefined) {
+      res.status(400).json({ error: 'status doit être "read" ou "toread"' });
+      return;
+  }
+
+  try {
+    const entries = await getLibraryByUser(userId, status);
+    res.json(entries);
+  } catch (err) {
+    res.status(500).json({ error: 'Erreur lors de la récupération de la bibliothèque' });
   }
 };

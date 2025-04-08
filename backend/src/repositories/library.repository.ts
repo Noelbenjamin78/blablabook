@@ -36,3 +36,22 @@ export const updateLibraryStatus = async (id: number, status: number): Promise<b
 
   return (result.rowCount ?? 0) > 0;
 };
+
+export const getLibraryByUser = async (userId: number, status?: number): Promise<LibraryEntry[]> => {
+  let query = `
+    SELECT l.*, b.title, b.author, b.image, b.genre_id, g.name AS genre_name
+    FROM library l
+    JOIN book b ON l.book_id = b.id
+    LEFT JOIN genre g ON b.genre_id = g.id
+    WHERE l.user_id = $1
+  `;
+  const values: (number | string)[] = [userId];
+
+  if (status !== undefined) {
+    query += ` AND l.status = $2`;
+    values.push(status);
+  }
+
+  const result = await db.query(query, values);
+  return result.rows;
+};
