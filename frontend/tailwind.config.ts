@@ -3,7 +3,7 @@ import globals from 'globals';
 
 module.exports = {
     darkMode: ['class'],
-    content: [],
+    content: ['./src/**/*.{js,ts,jsx,tsx}'],
     files: ['**/*.{ts,tsx}'],
     languageOptions: {
         ecmaVersion: 2020,
@@ -21,6 +21,9 @@ module.exports = {
                 sm: 'calc(var(--radius) - 4px)',
             },
             colors: {
+                'app-bg': '#F5F5DC',
+                'text-title-gold': '#CD7F32',
+                'secondary-blue': '#1F4690',
                 background: 'hsl(var(--background))',
                 foreground: 'hsl(var(--foreground))',
                 card: {
