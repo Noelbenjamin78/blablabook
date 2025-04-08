@@ -21,6 +21,18 @@ export const removeFromLibrary = async (id: number): Promise<boolean> => {
     `DELETE FROM library WHERE id = $1`,
     [id]
   );
-  
+  return (result.rowCount ?? 0) > 0;
+};
+
+export const updateLibraryStatus = async (id: number, status: number): Promise<boolean> => {
+  const result = await db.query(
+    `
+    UPDATE library
+    SET status = $1
+    WHERE id = $2
+    `,
+    [status, id]
+  );
+
   return (result.rowCount ?? 0) > 0;
 };
