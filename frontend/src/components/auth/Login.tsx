@@ -1,90 +1,78 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 
-interface AuthFormProps {
-    onLogin: (email: string, password: string) => void;
-}
+// Validation schema avec Zod
+const loginSchema = z.object({
+    email: z.string().email('Email invalide'),
+    password: z.string().min(6, 'Le mot de passe doit contenir au moins 6 caractères'),
+});
 
-const AuthForm: React.FC<AuthFormProps> = ({ onLogin }) => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+type LoginFormValues = z.infer<typeof loginSchema>;
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        onLogin(email, password);
+const Login: React.FC<{ onLogin: (email: string, password: string) => void }> = ({ onLogin }) => {
+    const form = useForm<LoginFormValues>({
+        resolver: zodResolver(loginSchema),
+        defaultValues: {
+            email: '',
+            password: '',
+        },
+    });
+
+    const onSubmit = (data: LoginFormValues) => {
+        onLogin(data.email, data.password);
     };
 
     return (
         <div className="flex flex-col min-h-screen">
-            <header className="bg-secondary-blue text-white py-4 w-full">
-                <div className="flex items-center justify-between px-4">
-                    <h1 className="text-2xl font-bold">
-                        BlaBla<span className="text-text-title-gold">oo</span>k
-                    </h1>
-                    <div className="flex items-center justify-center w-full space-x-4">
-                        <Button
-                            className="bg-white text-text-title-gold hover:bg-gray-200"
-                            onClick={() => (window.location.href = '/')}
-                        >
-                            Accueil
-                        </Button>
-                        <Input
-                            type="text"
-                            placeholder="Rechercher..."
-                            className="w-64 bg-white text-black placeholder-gray-500"
-                        />
-                    </div>
-                </div>
-            </header>
-
+            <Header />
             <h1 className="text-3xl font-bold text-center mt-6 text-text-title-gold">CONNEXION</h1>
-
             <main className="flex-grow">
-                <form
-                    onSubmit={handleSubmit}
-                    className="space-y-6 max-w-md mx-auto p-6 bg-white shadow-md rounded-lg mt-10"
-                >
-                    <div className="space-y-2">
-                        <Label htmlFor="email" className="text-sm font-medium text-gray-700">
-                            Email
-                        </Label>
-                        <Input
-                            type="email"
-                            id="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            placeholder="Entrez votre email"
-                            required
-                        />
-                    </div>
-                    <div className="space-y-2">
-                        <Label htmlFor="password" className="text-sm font-medium text-gray-700">
-                            Mot de passe
-                        </Label>
-                        <Input
-                            type="password"
-                            id="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            placeholder="Entrez votre mot de passe"
-                            required
-                        />
-                    </div>
-                    <Button type="submit" className="w-full bg-secondary-blue text-white hover:bg-blue-700">
-                        Connexion
-                    </Button>
-                </form>
-            </main>
-
-            <footer className="bg-secondary-blue text-white py-4 w-full">
-                <div className="text-center">
-                    <p className="text-sm">© 2025 BlaBlaBook. Tous droits réservés.</p>
+                <div className="max-w-md mx-auto p-6  shadow-md rounded-lg mt-10 bg-app-bg-darker">
+                    <Form {...form}>
+                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                            <FormField
+                                name="email"
+                                control={form.control}
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Email</FormLabel>
+                                        <FormControl>
+                                            <Input type="email" placeholder="Entrez votre email" {...field} className='bg-app-bg'/>
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                name="password"
+                                control={form.control}
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Mot de passe</FormLabel>
+                                        <FormControl>
+                                            <Input type="password" placeholder="Entrez votre mot de passe" {...field} className='bg-app-bg'/>
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <Button type="submit" variant="defaultNoHover" className="w-full bg-app-bg text-black border border-black">
+                                Connexion
+                            </Button>
+                        </form>
+                    </Form>
                 </div>
-            </footer>
+            </main>
+            <Footer />
         </div>
     );
 };
 
-export default AuthForm;
+export default Login;
