@@ -1,12 +1,34 @@
 import './App.css';
-import { Route, Routes } from 'react-router';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Login from './components/auth/Login';
+import Register from './components/auth/Register';
 
 function App() {
     return (
         <main>
             <div>
                 <Routes>
-                    <Route path="/" />
+                    <Route path="/" element={<div>Accueil</div>} />
+                    <Route
+                        path="/login"
+                        element={
+                            <Login
+                                onLogin={function (email: string, password: string): void {
+                                    throw new Error('Function not implemented.');
+                                }}
+                            />
+                        }
+                    />
+                    <Route
+                        path="/register"
+                        element={
+                            <Register
+                                onRegister={function (email: string, password: string): void {
+                                    throw new Error('Function not implemented.');
+                                }}
+                            />
+                        }
+                    />
                 </Routes>
             </div>
         </main>
