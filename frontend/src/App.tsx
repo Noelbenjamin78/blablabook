@@ -5,7 +5,7 @@ import Register from './components/auth/Register';
 
 function App() {
     return (
-        <main>
+        <main className='bg-app-bg'>
             <div>
                 <Routes>
                     <Route path="/" element={<div>Accueil</div>} />

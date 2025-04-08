@@ -22,6 +22,7 @@ module.exports = {
             },
             colors: {
                 'app-bg': '#F5F5DC',
+                'app-bg-darker': '#E5E5D0',
                 'text-title-gold': '#CD7F32',
                 'secondary-blue': '#1F4690',
                 background: 'hsl(var(--background))',
