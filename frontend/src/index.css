@@ -3,8 +3,30 @@
 @custom-variant dark (&:is(.dark *));
 @config "../tailwind.config.ts";
 
+@font-face {
+    font-family: 'EB Garamond';
+    src: url('./assets/fonts/EBGaramond-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'EB Garamond';
+    src: url('./assets/fonts/EBGaramond-Italic.ttf') format('truetype');
+    font-weight: 400;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'EB Garamond';
+    src: url('./assets/fonts/EBGaramond-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+}
+
 @layer base {
     :root {
+        --font-garamond: 'EB Garamond', sans-serif;
         --background: 0 0% 100%;
         --foreground: 0 0% 3.9%;
         --card: 0 0% 100%;
@@ -30,6 +52,10 @@
         --chart-4: 43 74% 66%;
         --chart-5: 27 87% 67%;
         --radius: 0.5rem;
+    }
+    body {
+        font-family: var(--font-garamond), sans-serif;
+        background-color: var(--F5F5DC);
     }
     .dark {
         --background: 0 0% 3.9%;
