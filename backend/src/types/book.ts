@@ -10,4 +10,4 @@ export interface Book {
     description: string;
     genre_id: number | null;
     genre_name?: string; // nullable, present when we join with genre table in some queries
-  }
+}

@@ -9,6 +9,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { useIsMobile } from '@/hooks/use-mobile';
 
+// Validation schema avec Zod
 const registerSchema = z
     .object({
         name: z.string().min(2, 'Le nom doit contenir au moins 2 caractères'),
@@ -28,7 +29,9 @@ const registerSchema = z
 
 type RegisterFormValues = z.infer<typeof registerSchema>;
 
-const Register: React.FC = () => {
+const Register: React.FC<{ onRegister: (name: string, email: string, password: string) => void }> = ({
+    onRegister,
+}) => {
     const form = useForm<RegisterFormValues>({
         resolver: zodResolver(registerSchema),
         defaultValues: {
@@ -92,6 +95,12 @@ const Register: React.FC = () => {
                                                 {...field}
                                                 className="bg-app-bg"
                                             />
+                                            <Input
+                                                type="text"
+                                                placeholder="Entrez votre nom"
+                                                {...field}
+                                                className="bg-app-bg"
+                                            />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -104,6 +113,12 @@ const Register: React.FC = () => {
                                     <FormItem>
                                         <FormLabel>Email</FormLabel>
                                         <FormControl>
+                                            <Input
+                                                type="email"
+                                                placeholder="Entrez votre email"
+                                                {...field}
+                                                className="bg-app-bg"
+                                            />
                                             <Input
                                                 type="email"
                                                 placeholder="Entrez votre email"
@@ -123,8 +138,8 @@ const Register: React.FC = () => {
                                         <FormLabel>Mot de passe</FormLabel>
                                         <FormControl>
                                             <Input
-                                                type="password"
-                                                placeholder="Entrez votre mot de passe"
+                                                type="email"
+                                                placeholder="Confirmez votre email"
                                                 {...field}
                                                 className="bg-app-bg"
                                             />
@@ -141,8 +156,8 @@ const Register: React.FC = () => {
                                         <FormLabel>Confirmez votre email</FormLabel>
                                         <FormControl>
                                             <Input
-                                                type="email"
-                                                placeholder="Confirmez votre email"
+                                                type="password"
+                                                placeholder="Entrez votre mot de passe"
                                                 {...field}
                                                 className="bg-app-bg"
                                             />
@@ -165,11 +180,22 @@ const Register: React.FC = () => {
                                                 {...field}
                                                 className="bg-app-bg"
                                             />
+                                            <Input
+                                                type="password"
+                                                placeholder="Confirmez votre mot de passe"
+                                                {...field}
+                                                className="bg-app-bg"
+                                            />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
                                 )}
                             />
+                            <Button
+                                type="submit"
+                                variant="defaultNoHover"
+                                className="w-full bg-app-bg text-black border border-black"
+                            >
                             <Button
                                 type="submit"
                                 variant="defaultNoHover"
@@ -187,3 +213,4 @@ const Register: React.FC = () => {
 };
 
 export default Register;
+
