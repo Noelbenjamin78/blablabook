@@ -9,6 +9,12 @@
 docker compose up -d --build
 ```
 
+- Temporairement : créer un user dans la table "user" de la db
+
+```sh
+accès via localhost:8080 à adminer
+```
+
 # Routes API
 
 ## /books
