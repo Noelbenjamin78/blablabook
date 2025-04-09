@@ -18,7 +18,8 @@ const Library = () => {
                 <div className="flex justify-center space-x-16 top-1 text-2xl">
                     <Card
                         className="w-80 h-100 my-auto items-center cursor-pointer bg-app-bg-darker shadow-lg"
-                        onClick={() => navigate('/library/books-read')}>
+                        onClick={() => navigate('/library/books-read')}
+                    >
                         <CardTitle className="text-title-gold">Mes livres lus</CardTitle>
                         <Link to="/books-read"></Link>
                         <img src={libraryRead} alt="" className="w-40 h-40 object-cover" />
@@ -31,7 +32,8 @@ const Library = () => {
                     </Card>
                     <Card
                         className="w-80 h-100 items-center cursor-pointer bg-app-bg-darker shadow-lg"
-                        onClick={() => navigate('/library/books-to-read')}>
+                        onClick={() => navigate('/library/books-to-read')}
+                    >
                         <CardTitle className="text-title-gold">Mes livres à lire</CardTitle>
                         <Link to="/books-to-read"></Link>
                         <img src={libraryToRead} alt="" className="w-40 h-40 object-cover" />
