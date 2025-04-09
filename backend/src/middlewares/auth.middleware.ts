@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response, NextFunction, RequestHandler } from 'express';
 import jwt from 'jsonwebtoken';
 
 const SECRET_KEY = process.env.JWT_SECRET || 'blablabook_dev_secret';
@@ -13,11 +13,12 @@ export interface AuthenticatedRequest extends Request {
   user?: JwtPayload;
 }
 
-export const verifyToken = (req: Request, res: Response, next: NextFunction) => {
+export const verifyToken: RequestHandler = (req, res, next) => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({ error: 'Token manquant ou mal formaté' });
+    res.status(401).json({ error: 'Token manquant ou mal formaté' });
+    return;
   }
 
   const token = authHeader.split(' ')[1];
