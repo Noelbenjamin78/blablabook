@@ -10,3 +10,7 @@ export type NewUser = {
     email: string;
     created_at: string;
   };
+
+  export type UserWithPassword = User & {
+    password: string;
+  };
