@@ -5,9 +5,10 @@ import Register from './components/auth/Register';
 import Library from './components/library/Library';
 import BooksRead from './components/library/BooksRead';
 import BooksToRead from './components/library/BooksToRead';
+import BooksList from './components/books/BooksList';
+import BookItem from './components/books/BookItem';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import { useState } from 'react';
 import { Toaster } from './components/ui/sonner';
 import { toast } from 'sonner';
 import { Smile } from 'lucide-react';
@@ -53,6 +54,8 @@ function App() {
                     <Route path="/library" element={<Library />} />
                     <Route path="/library/books-read" element={<BooksRead />} />
                     <Route path="/library/books-to-read" element={<BooksToRead />} />
+                    <Route path="/books" element={<BooksList />} />
+                    <Route path="/book/:id" element={<BookItem />} />
                 </Routes>
             </div>
             <Footer />

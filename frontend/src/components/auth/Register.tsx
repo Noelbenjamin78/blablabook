@@ -97,12 +97,6 @@ const Register: React.FC<{ onRegister: (name: string, email: string, password: s
                                                 {...field}
                                                 className="bg-app-bg"
                                             />
-                                            <Input
-                                                type="text"
-                                                placeholder="Entrez votre nom"
-                                                {...field}
-                                                className="bg-app-bg"
-                                            />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -115,12 +109,6 @@ const Register: React.FC<{ onRegister: (name: string, email: string, password: s
                                     <FormItem>
                                         <FormLabel>Email</FormLabel>
                                         <FormControl>
-                                            <Input
-                                                type="email"
-                                                placeholder="Entrez votre email"
-                                                {...field}
-                                                className="bg-app-bg"
-                                            />
                                             <Input
                                                 type="email"
                                                 placeholder="Entrez votre email"
@@ -175,12 +163,6 @@ const Register: React.FC<{ onRegister: (name: string, email: string, password: s
                                     <FormItem>
                                         <FormLabel>Confirmez votre mot de passe</FormLabel>
                                         <FormControl>
-                                            <Input
-                                                type="password"
-                                                placeholder="Confirmez votre mot de passe"
-                                                {...field}
-                                                className="bg-app-bg"
-                                            />
                                             <Input
                                                 type="password"
                                                 placeholder="Confirmez votre mot de passe"
