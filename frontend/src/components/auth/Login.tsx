@@ -7,11 +7,11 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { useIsMobile } from '@/hooks/use-mobile';
 
-// Validation schema avec Zod
 const loginSchema = z.object({
     email: z.string().email('Email invalide'),
-    password: z.string().min(6, 'Le mot de passe doit contenir au moins 6 caractères'),
+    password: z.string().min(6, 'Mot de passe incorect'),
 });
 
 type LoginFormValues = z.infer<typeof loginSchema>;
@@ -29,12 +29,16 @@ const Login: React.FC<{ onLogin: (email: string, password: string) => void }> = 
         onLogin(data.email, data.password);
     };
 
+    const isMobile = useIsMobile(); 
+
     return (
         <div className="flex flex-col min-h-screen">
             <Header />
-            <h1 className="text-3xl font-bold text-center mt-6 text-text-title-gold">CONNEXION</h1>
-            <main className="flex-grow">
-                <div className="max-w-md mx-auto p-6  shadow-md rounded-lg mt-10 bg-app-bg-darker">
+            <main className="flex-grow flex flex-col items-center justify-center px-4 space-y-6">
+                <h1 className={`text-4xl md:text-3xl font-bold text-center mt-4 md:mt-6 text-title-gold`}>CONNEXION</h1>
+                <div
+                    className={`mx-auto mt-8 w-full ${isMobile ? '' : 'max-w-md'} p-4 md:p-6 shadow-md rounded-lg bg-app-bg-darker`}
+                >
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                             <FormField
@@ -44,7 +48,12 @@ const Login: React.FC<{ onLogin: (email: string, password: string) => void }> = 
                                     <FormItem>
                                         <FormLabel>Email</FormLabel>
                                         <FormControl>
-                                            <Input type="email" placeholder="Entrez votre email" {...field} className='bg-app-bg'/>
+                                            <Input
+                                                type="email"
+                                                placeholder="Entrez votre email"
+                                                {...field}
+                                                className="bg-app-bg"
+                                            />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -57,13 +66,27 @@ const Login: React.FC<{ onLogin: (email: string, password: string) => void }> = 
                                     <FormItem>
                                         <FormLabel>Mot de passe</FormLabel>
                                         <FormControl>
-                                            <Input type="password" placeholder="Entrez votre mot de passe" {...field} className='bg-app-bg'/>
+                                            <Input
+                                                type="password"
+                                                placeholder="Entrez votre mot de passe"
+                                                {...field}
+                                                className="bg-app-bg"
+                                            />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
                                 )}
                             />
-                            <Button type="submit" variant="defaultNoHover" className="w-full bg-app-bg text-black border border-black">
+                            <div className="text-right">
+                                <a href="/forgot-password" className="text-sm text-blue-500 hover:underline">
+                                    Mot de passe oublié ?
+                                </a>
+                            </div>
+                            <Button
+                                type="submit"
+                                variant="defaultNoHover"
+                                className="w-full bg-app-bg text-black border border-black"
+                            >
                                 Connexion
                             </Button>
                         </form>
