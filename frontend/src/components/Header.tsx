@@ -1,14 +1,26 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Search, Menu } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import LogoutButton from './auth/LogoutButton';
 
 const Header: React.FC = () => {
     const isMobile = useIsMobile();
     const [searchQuery, setSearchQuery] = useState('');
     const [showSearchModal, setShowSearchModal] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        setIsLoggedIn(!!token);
+    }, []);
+
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        setIsLoggedIn(false);
+    };
 
     const handleSearchClick = () => {
         setShowSearchModal(true);
@@ -43,6 +55,7 @@ const Header: React.FC = () => {
                             <Button asChild variant="defaultNoHover" className="bg-white text-title-gold">
                                 <a href="/contact">Contact</a>
                             </Button>
+                            {isLoggedIn && <LogoutButton onLogout={handleLogout} />}
                         </nav>
 
                         <div className="relative w-full max-w-[160px] sm:max-w-xs md:max-w-md">
