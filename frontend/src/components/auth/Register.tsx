@@ -5,7 +5,6 @@ import * as z from 'zod';
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { NewUser } from '@/types/user';
@@ -79,7 +78,6 @@ const Register: React.FC<{ onRegister: (name: string, email: string, password: s
 
     return (
         <div className="flex flex-col min-h-screen">
-            <Header />
             <h1 className="text-2xl md:text-3xl font-bold text-center mt-4 md:mt-6 text-title-gold">INSCRIPTION</h1>
             <main className="flex-grow px-4">
                 <div

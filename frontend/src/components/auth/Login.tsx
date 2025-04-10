@@ -5,17 +5,22 @@ import * as z from 'zod';
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import Header from '@/components/Header';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useNavigate } from 'react-router-dom';
 
 const loginSchema = z.object({
     email: z.string().email('Email invalide'),
     password: z.string().min(6, 'Mot de passe incorrect'),
 });
+type LoginProps = {
+    onLoginSuccess?: () => void;
+};
 
 type LoginFormValues = z.infer<typeof loginSchema>;
 
-const Login: React.FC = () => {
+const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
+    const navigate = useNavigate();
+
     const form = useForm<LoginFormValues>({
         resolver: zodResolver(loginSchema),
         defaultValues: {
@@ -37,7 +42,6 @@ const Login: React.FC = () => {
             if (!response.ok) {
                 const errorData = await response.json();
                 console.error('Erreur API :', errorData);
-                alert(errorData.error || 'Erreur lors de la connexion.');
                 return;
             }
 
@@ -46,9 +50,9 @@ const Login: React.FC = () => {
 
             localStorage.setItem('token', token);
 
-            alert('Connexion réussie !');
+            if (onLoginSuccess) onLoginSuccess();
 
-            window.location.href = '/accueil';
+            navigate('/accueil');
         } catch (error) {
             console.error('Erreur lors de la connexion :', error);
             alert('Une erreur est survenue.');
@@ -59,7 +63,6 @@ const Login: React.FC = () => {
 
     return (
         <div className="flex flex-col min-h-screen">
-            <Header />
             <main className="flex-grow flex flex-col items-center justify-center px-4 space-y-6">
                 <h1 className={`text-4xl md:text-3xl font-bold text-center mt-4 md:mt-6 text-title-gold`}>CONNEXION</h1>
                 <div
