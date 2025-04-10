@@ -11,13 +11,13 @@ const Header: React.FC = () => {
     const [showSearchModal, setShowSearchModal] = useState(false);
 
     const handleSearchClick = () => {
-        setShowSearchModal(true); 
+        setShowSearchModal(true);
     };
 
     const handleSearchSubmit = () => {
         if (searchQuery.trim()) {
             console.log('Recherche lancée pour :', searchQuery);
-            
+
             setShowSearchModal(false);
         } else {
             alert('Veuillez entrer un terme de recherche.');
@@ -64,7 +64,6 @@ const Header: React.FC = () => {
                 {isMobile && (
                     <>
                         <div className="relative flex-1 flex justify-center">
-                            
                             <button onClick={handleSearchClick}>
                                 <Search className="text-white" size={28} />
                             </button>

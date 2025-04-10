@@ -50,7 +50,7 @@ const Register: React.FC<{ onRegister: (name: string, email: string, password: s
             email: data.email,
             password: data.password,
         };
-    
+
         try {
             const response = await fetch('http://localhost:5000/api/auth/register', {
                 method: 'POST',
@@ -59,14 +59,14 @@ const Register: React.FC<{ onRegister: (name: string, email: string, password: s
                 },
                 body: JSON.stringify(newUser),
             });
-    
+
             if (!response.ok) {
                 const errorData = await response.json();
                 console.error('Erreur API :', errorData);
                 alert(errorData.error || "Erreur lors de l'inscription.");
                 return;
             }
-    
+
             alert('Inscription réussie !');
             window.location.href = '/accueil';
         } catch (error) {
@@ -83,8 +83,7 @@ const Register: React.FC<{ onRegister: (name: string, email: string, password: s
             <h1 className="text-2xl md:text-3xl font-bold text-center mt-4 md:mt-6 text-title-gold">INSCRIPTION</h1>
             <main className="flex-grow px-4">
                 <div
-                    className={`w-full mx-auto mt-6 p-4 md:p-6 shadow-md rounded-lg bg-app-bg-darker ${isMobile ? '' : 'max-w-md md:max-w-lg lg:max-w-xl'}`}
-                >
+                    className={`w-full mx-auto mt-6 p-4 md:p-6 shadow-md rounded-lg bg-app-bg-darker ${isMobile ? '' : 'max-w-md md:max-w-lg lg:max-w-xl'}`}>
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
                             <FormField
@@ -199,12 +198,11 @@ const Register: React.FC<{ onRegister: (name: string, email: string, password: s
                                 type="submit"
                                 variant="defaultNoHover"
                                 className="w-full bg-app-bg text-black border border-black"
-                            >
+                            />
                             <Button
                                 type="submit"
                                 variant="defaultNoHover"
-                                className="w-full bg-app-bg text-black border border-black"
-                            >
+                                className="w-full bg-app-bg text-black border border-black">
                                 Valider
                             </Button>
                         </form>
@@ -216,6 +214,4 @@ const Register: React.FC<{ onRegister: (name: string, email: string, password: s
     );
 };
 
-
 export default Register;
-

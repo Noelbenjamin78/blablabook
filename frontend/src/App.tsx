@@ -5,11 +5,14 @@ import Register from './components/auth/Register';
 import Library from './components/library/Library';
 import BooksRead from './components/library/BooksRead';
 import BooksToRead from './components/library/BooksToRead';
+import Header from './components/Header';
+import Footer from './components/Footer';
 
 function App() {
     return (
         <main className="bg-app-bg h-full w-full">
-            <div>
+            <div className="pb-16 md:pb-20">
+                <Header />
                 <Routes>
                     <Route path="/" element={<div>Accueil</div>} />
                     <Route
@@ -37,6 +40,7 @@ function App() {
                     <Route path="/library/books-to-read" element={<BooksToRead />} />
                 </Routes>
             </div>
+            <Footer />
         </main>
     );
 }
