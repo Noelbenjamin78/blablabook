@@ -1,34 +1,39 @@
-import React from 'react';
-import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import React, { useEffect, useState } from 'react';
+import { TableBody, TableCell, TableRow } from '@/components/ui/table';
 import { Card } from '../ui/card';
 import { BookA, UserPen } from 'lucide-react';
+import { Book } from '../../../../backend/src/types/book';
+import fetchUserBooks from '@/api/library/fetchUserBooks';
+import { useIsMobile } from '@/hooks/use-mobile';
+import empty from '../../assets/images/empty.svg';
 
-// TODO:to change dynamically with the API and DB
-const booksToRead = [
-    { title: 'Fahrenheit 451', author: 'Ray Bradbury' },
-    { title: 'L’Étranger', author: 'Albert Camus' },
-    { title: 'Les Fleurs du mal', author: 'Charles Baudelaire' },
-    { title: 'Le Meilleur des mondes', author: 'Aldous Huxley' },
-    { title: 'La Peste', author: 'Albert Camus' },
-    { title: 'Crime et Châtiment', author: 'Fiodor Dostoïevski' },
-    { title: 'Sur la route', author: 'Jack Kerouac' },
-    { title: 'Cent ans de solitude', author: 'Gabriel García Márquez' },
-    { title: 'Le Parfum', author: 'Patrick Süskind' },
-    { title: 'Don Quichotte', author: 'Miguel de Cervantes' },
-];
-
-const isMobile = window.innerWidth < 768;
+export interface BookWithStatus extends Book {
+    status: number;
+}
 
 const BooksToRead = () => {
+    const [toReadBooks, setToReadBooks] = useState<BookWithStatus[]>([]);
+    const isMobile = useIsMobile();
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const books = await fetchUserBooks(2);
+            setToReadBooks(books.filter((book: BookWithStatus) => book.status === 0));
+        };
+        fetchData();
+    }, []);
+
     return (
         <div>
-            <h1 className="text-4xl font-bold text-title-gold pt-20 mb-28">Mes livres à lire</h1>
+            <h1 className="text-4xl md:text-5xl text-center font-bold text-title-gold pt-20 mb-10 md:mb-20 xl:mb-32">
+                Mes livres à lire
+            </h1>
             <div className="flex justify-center">
-                <Card className="bg-app-bg-darker w-fit md:w-fit h-4/5 px-3">
+                <Card className="bg-app-bg-darker scale-90 md:scale-100 lg:scale-110 xl:scale-125 w-fit md:w-fit h-4/5 px-3 mb-4">
                     {isMobile ? (
-                        <Table className="bg-app-bg-darker w-fit h-4/5 text-xl items-center justify-center">
-                            <TableBody>
-                                {booksToRead.map((book) => (
+                        <TableBody>
+                            {toReadBooks.length > 0 ? (
+                                toReadBooks.map((book) => (
                                     <TableRow key={book.title} className="border-b border-title-gold">
                                         <TableCell className="text-left flex flex-col gap-1 py-2">
                                             <span className="flex items-baseline italic">
@@ -41,37 +46,36 @@ const BooksToRead = () => {
                                             </span>
                                         </TableCell>
                                     </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    ) : (
-                        <Table className="bg-app-bg-darker w-fit h-4/5 text-xl items-center justify-center">
-                            <TableHeader className="space-x-16 text-title-gold">
+                                ))
+                            ) : (
                                 <TableRow>
-                                    <TableHead className="text-2xl text-left text-title-gold font-bold">
-                                        Titre
-                                    </TableHead>
-                                    <TableHead className="text-2xl text-left text-title-gold font-bold">
-                                        Auteur
-                                    </TableHead>
+                                    <TableCell className="text-center italic text-title-gold py-4">
+                                        <p>Aucun livre à lire pour l’instant...</p>
+                                        <img src={empty} alt="" />
+                                    </TableCell>
                                 </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {booksToRead.map((book) => (
+                            )}
+                        </TableBody>
+                    ) : (
+                        <TableBody>
+                            {toReadBooks.length > 0 ? (
+                                toReadBooks.map((book) => (
                                     <TableRow key={book.title} className="border-b-1 border-title-gold">
                                         <TableCell className="text-left italic font-semibold">{book.title}</TableCell>
                                         <TableCell className="text-left">{book.author}</TableCell>
                                     </TableRow>
-                                ))}
-                            </TableBody>
-                            <TableFooter className="text-title-gold">
+                                ))
+                            ) : (
                                 <TableRow>
-                                    <TableCell colSpan={2} className="text-center col-span-full">
-                                        {booksToRead.length} livres à lire
+                                    <TableCell colSpan={2} className="text-center italic text-title-gold py-4">
+                                        <p className="text-xl md:text-2xl lg:text-3xl">
+                                            Aucun livre à lire pour l’instant...
+                                        </p>
+                                        <img width={300} src={empty} alt="" />
                                     </TableCell>
                                 </TableRow>
-                            </TableFooter>
-                        </Table>
+                            )}
+                        </TableBody>
                     )}
                 </Card>
             </div>

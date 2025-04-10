@@ -21,6 +21,7 @@ export default [
                 window: true,
                 document: true,
                 fetch: true,
+                console: true,
             },
         },
         plugins: {
