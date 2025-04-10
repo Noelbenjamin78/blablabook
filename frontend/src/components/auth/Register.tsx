@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { NewUser } from '@/types/user';
 
 const registerSchema = z
     .object({
@@ -41,26 +42,30 @@ const Register: React.FC = () => {
     });
 
     const onSubmit = async (data: RegisterFormValues) => {
+        const newUser: NewUser = {
+            username: data.name,
+            email: data.email,
+            password: data.password,
+        };
+    
         try {
-            const response = await fetch('http://localhost:5000/api/register', {
+            const response = await fetch('http://localhost:5000/api/auth/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    username: data.name,
-                    email: data.email,
-                    password: data.password,
-                }),
+                body: JSON.stringify(newUser),
             });
-
+    
             if (!response.ok) {
                 const errorData = await response.json();
-                alert(errorData.message || "Erreur lors de l'inscription.");
+                console.error('Erreur API :', errorData);
+                alert(errorData.error || "Erreur lors de l'inscription.");
                 return;
             }
-
+    
             alert('Inscription réussie !');
+            window.location.href = '/accueil';
         } catch (error) {
             console.error("Erreur lors de l'inscription :", error);
             alert('Une erreur est survenue.');
@@ -115,24 +120,6 @@ const Register: React.FC = () => {
                                     </FormItem>
                                 )}
                             />
-                             <FormField
-                                name="password"
-                                control={form.control}
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Mot de passe</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                type="password"
-                                                placeholder="Entrez votre mot de passe"
-                                                {...field}
-                                                className="bg-app-bg"
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
                             <FormField
                                 name="confirmEmail"
                                 control={form.control}
@@ -151,7 +138,24 @@ const Register: React.FC = () => {
                                     </FormItem>
                                 )}
                             />
-                           
+                            <FormField
+                                name="password"
+                                control={form.control}
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Mot de passe</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                type="password"
+                                                placeholder="Entrez votre mot de passe"
+                                                {...field}
+                                                className="bg-app-bg"
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
                             <FormField
                                 name="confirmPassword"
                                 control={form.control}
