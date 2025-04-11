@@ -62,7 +62,7 @@ export default function Homepage() {
               <div
                 key={book.id}
                 className="book text-center cursor-pointer"
-                onClick={() => handleBookClick(book.id)} // 👈
+                onClick={() => handleBookClick(book.id)}
               >
                 <Card className="transition-all hover:shadow-xl">
                   <CardContent className="p-4">
