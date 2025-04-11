@@ -1,7 +1,4 @@
-/* eslint-disable indent */
 import React, { useEffect, useState } from "react";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import "../styles/Homepage.css";
 import { useIsMobile } from "../hooks/use-mobile";
 import {
@@ -11,9 +8,11 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import fetchBooks from "@/api/books/fetchBooks";
+import { useNavigate } from "react-router-dom"; // 👈
 
 export default function Homepage() {
   const isMobile = useIsMobile();
+  const navigate = useNavigate(); // 👈
   const [books, setBooks] = useState<any[]>([]);
 
   useEffect(() => {
@@ -28,6 +27,10 @@ export default function Homepage() {
 
     loadBooks();
   }, []);
+
+  const handleBookClick = (id: number) => {
+    navigate(`/book/${id}`);
+  };
 
   const uniqueBooksByCategory = () => {
     const seen = new Set();
@@ -56,7 +59,11 @@ export default function Homepage() {
             }`}
           >
             {(isMobile ? (randomBook ? [randomBook] : []) : uniqueBooksByCategory()).map((book) => (
-              <div key={book.id} className="book text-center">
+              <div
+                key={book.id}
+                className="book text-center cursor-pointer"
+                onClick={() => handleBookClick(book.id)} // 👈
+              >
                 <Card className="transition-all hover:shadow-xl">
                   <CardContent className="p-4">
                     <img
