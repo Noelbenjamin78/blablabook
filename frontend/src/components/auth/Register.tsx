@@ -5,7 +5,6 @@ import * as z from 'zod';
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { NewUser } from '@/types/user';
@@ -50,7 +49,7 @@ const Register: React.FC<{ onRegister: (name: string, email: string, password: s
             email: data.email,
             password: data.password,
         };
-    
+
         try {
             const response = await fetch('http://localhost:5000/api/auth/register', {
                 method: 'POST',
@@ -59,14 +58,14 @@ const Register: React.FC<{ onRegister: (name: string, email: string, password: s
                 },
                 body: JSON.stringify(newUser),
             });
-    
+
             if (!response.ok) {
                 const errorData = await response.json();
                 console.error('Erreur API :', errorData);
                 alert(errorData.error || "Erreur lors de l'inscription.");
                 return;
             }
-    
+
             alert('Inscription réussie !');
             window.location.href = '/accueil';
         } catch (error) {
@@ -79,12 +78,10 @@ const Register: React.FC<{ onRegister: (name: string, email: string, password: s
 
     return (
         <div className="flex flex-col min-h-screen">
-            <Header />
             <h1 className="text-2xl md:text-3xl font-bold text-center mt-4 md:mt-6 text-title-gold">INSCRIPTION</h1>
             <main className="flex-grow px-4">
                 <div
-                    className={`w-full mx-auto mt-6 p-4 md:p-6 shadow-md rounded-lg bg-app-bg-darker ${isMobile ? '' : 'max-w-md md:max-w-lg lg:max-w-xl'}`}
-                >
+                    className={`w-full mx-auto mt-6 p-4 md:p-6 shadow-md rounded-lg bg-app-bg-darker ${isMobile ? '' : 'max-w-md md:max-w-lg lg:max-w-xl'}`}>
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
                             <FormField
@@ -94,12 +91,6 @@ const Register: React.FC<{ onRegister: (name: string, email: string, password: s
                                     <FormItem>
                                         <FormLabel>Nom</FormLabel>
                                         <FormControl>
-                                            <Input
-                                                type="text"
-                                                placeholder="Entrez votre nom"
-                                                {...field}
-                                                className="bg-app-bg"
-                                            />
                                             <Input
                                                 type="text"
                                                 placeholder="Entrez votre nom"
@@ -118,12 +109,6 @@ const Register: React.FC<{ onRegister: (name: string, email: string, password: s
                                     <FormItem>
                                         <FormLabel>Email</FormLabel>
                                         <FormControl>
-                                            <Input
-                                                type="email"
-                                                placeholder="Entrez votre email"
-                                                {...field}
-                                                className="bg-app-bg"
-                                            />
                                             <Input
                                                 type="email"
                                                 placeholder="Entrez votre email"
@@ -184,12 +169,6 @@ const Register: React.FC<{ onRegister: (name: string, email: string, password: s
                                                 {...field}
                                                 className="bg-app-bg"
                                             />
-                                            <Input
-                                                type="password"
-                                                placeholder="Confirmez votre mot de passe"
-                                                {...field}
-                                                className="bg-app-bg"
-                                            />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -199,12 +178,11 @@ const Register: React.FC<{ onRegister: (name: string, email: string, password: s
                                 type="submit"
                                 variant="defaultNoHover"
                                 className="w-full bg-app-bg text-black border border-black"
-                            >
+                            />
                             <Button
                                 type="submit"
                                 variant="defaultNoHover"
-                                className="w-full bg-app-bg text-black border border-black"
-                            >
+                                className="w-full bg-app-bg text-black border border-black">
                                 Valider
                             </Button>
                         </form>
@@ -216,6 +194,4 @@ const Register: React.FC<{ onRegister: (name: string, email: string, password: s
     );
 };
 
-
 export default Register;
-
