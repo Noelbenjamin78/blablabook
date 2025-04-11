@@ -77,23 +77,27 @@ const BooksList = () => {
                                 </TableHeader>
                             )}
                             <TableBody>
-                                {books.length > 0 ? (
-                                    books.map((book) => (
-                                        <TableRow key={book.title} className="border-b-1 border-title-gold">
-                                            <TableCell className="text-left text-xl md:text-2xl lg:text-3xl italic font-semibold">
-                                                {book.title}
-                                            </TableCell>
-                                            <TableCell className="text-left">{book.author}</TableCell>
-                                        </TableRow>
-                                    ))
-                                ) : (
-                                    <TableRow>
-                                        <TableCell colSpan={2} className="text-center italic text-title-gold py-4">
-                                            <p className="text-xl md:text-2xl lg:text-3xl">Aucun livre disponible...</p>
-                                            <img width={300} src={empty} alt="vide" />
-                                        </TableCell>
-                                    </TableRow>
-                                )}
+                            {books.length > 0 ? (
+                                books.map((book) => (
+                                <TableRow
+                                    key={book.title}
+                                    className="border-b-1 border-title-gold cursor-pointer hover:bg-app-bg-light transition"
+                                    onClick={() => handleBookClick(book.id)}
+                                >
+                                    <TableCell className="text-left text-xl md:text-2xl lg:text-3xl italic font-semibold">
+                                    {book.title}
+                                    </TableCell>
+                                    <TableCell className="text-left">{book.author}</TableCell>
+                                </TableRow>
+                                ))
+                            ) : (
+                                <TableRow>
+                                <TableCell colSpan={2} className="text-center italic text-title-gold py-4">
+                                    <p className="text-xl md:text-2xl lg:text-3xl">Aucun livre disponible...</p>
+                                    <img width={300} src={empty} alt="vide" />
+                                </TableCell>
+                                </TableRow>
+                            )}
                             </TableBody>
                             {books.length > 0 && (
                                 <TableFooter className="text-title-gold">

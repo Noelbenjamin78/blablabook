@@ -12,6 +12,7 @@ import Footer from './components/Footer';
 import { Toaster } from './components/ui/sonner';
 import { toast } from 'sonner';
 import { Smile } from 'lucide-react';
+import Homepage from './pages/Homepage';
 
 function App() {
     const handleLoginSuccess = () => {
@@ -29,7 +30,7 @@ function App() {
                 <Header />
                 <Toaster duration={6000} toastOptions={{ className: 'mt-4' }} position="top-right" richColors={true} />
                 <Routes>
-                    <Route path="/" element={<div>Accueil</div>} />
+                    <Route path="/" element={<Homepage />} />
                     <Route
                         path="/login"
                         element={
