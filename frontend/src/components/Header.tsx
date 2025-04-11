@@ -50,22 +50,41 @@ const Header: React.FC = () => {
                     </a>
 
                     {!isMobile && (
-                        <div className="flex flex-1 items-center justify-center gap-6">
-                            <nav className="flex items-center space-x-4 text-lg">
+                        <><div className="flex flex-1 items-center justify-center gap-6">
+                        <nav className="flex items-center space-x-4 text-lg">
                             <Button asChild variant="defaultNoHover" className="bg-white text-title-gold">
                                 <a href="/">Accueil</a>
                             </Button>
                             <Button asChild variant="defaultNoHover" className="bg-white text-title-gold">
-                                <a href="/about">À propos</a>
+                                <a href="/books">Tous les livres</a>
                             </Button>
-                            <Button asChild variant="defaultNoHover" className="bg-white text-title-gold">
-                                <a href="/contact">Contact</a>
-                            </Button>
-                            </nav>
-                            <div className="relative w-full max-w-[160px] sm:max-w-xs md:max-w-md">
-                                <SearchMethods books={books} />
-                                </div>
-                            </div>
+                            {isLoggedIn && (
+                                <Button asChild variant="defaultNoHover" className="bg-white text-title-gold">
+                                    <a href="/library">Ma bibliothèque</a>
+                                </Button>
+                            )}
+                                
+                        </nav>
+                        <div className="relative w-full max-w-[160px] sm:max-w-xs md:max-w-md">
+                            <SearchMethods books={books} openTrigger={false} />
+                        </div>
+                    </div>
+                    <nav>
+                        {isLoggedIn ? (
+                            <LogoutButton onLogout={handleLogout} />
+                        ) : (
+                            <>
+                                <Button asChild variant="defaultNoHover" className="bg-white text-title-gold mr-2">
+                                    <a href="/register">Inscription</a>
+                                </Button>
+                                <Button asChild variant="defaultNoHover" className="bg-white text-title-gold">
+                                    <a href="/login">Connexion</a>
+                                </Button>
+                            </>
+                        )}
+                    </nav>
+                        </>
+                            
                         )}               
                     {isMobile && (
                         <>
@@ -86,11 +105,25 @@ const Header: React.FC = () => {
                                         <a href="/accueil">Accueil</a>
                                     </Button>
                                     <Button asChild variant="defaultNoHover" className="bg-white text-title-gold">
-                                        <a href="/about">À propos</a>
+                                        <a href="/books">Tous les livres</a>
                                     </Button>
-                                    <Button asChild variant="defaultNoHover" className="bg-white text-title-gold">
-                                        <a href="/contact">Contact</a>
-                                    </Button>
+                                    {isLoggedIn ? (
+                                        <>
+                                        <Button asChild variant="defaultNoHover" className="bg-white text-title-gold">
+                                            <a href="/library">Ma bibliothèque</a>
+                                        </Button>
+                                        <LogoutButton onLogout={handleLogout} />
+                                        </>
+                                        ) : (
+                                            <>
+                                                <Button asChild variant="defaultNoHover" className="bg-white text-title-gold mr-2">
+                                                    <a href="/register">Inscription</a>
+                                                </Button>
+                                                <Button asChild variant="defaultNoHover" className="bg-white text-title-gold">
+                                                    <a href="/login">Connexion</a>
+                                                </Button>
+                                            </>
+                                    )}
                                     </nav>
                                 </SheetContent>
                                 </Sheet>
