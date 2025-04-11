@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { X } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useNavigate } from "react-router-dom";
 
 type Book = {
   id: number;
@@ -19,6 +20,7 @@ function SearchMethods({ books, openTrigger }: Props) {
   const [showSearch, setShowSearch] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
 
   console.log(books);
 
@@ -37,6 +39,12 @@ function SearchMethods({ books, openTrigger }: Props) {
   const handleCloseSearch = () => {
     setSearchInput("");
     setShowSearch(false);
+  };
+
+  const handleBookClick = (id: number) => {
+    setShowSearch(false);
+    setSearchInput("");
+    navigate(`/book/${id}`);
   };
 
   return (
@@ -68,6 +76,7 @@ function SearchMethods({ books, openTrigger }: Props) {
                 <div
                   key={book.id}
                   className="mb-2 flex items-center gap-4 rounded bg-white p-2"
+                  onClick={() => handleBookClick(book.id)}
                 >
                   <img
                     src={book.image}
@@ -128,6 +137,7 @@ function SearchMethods({ books, openTrigger }: Props) {
               <div
                 key={book.id}
                 className="mb-2 flex items-center gap-4 rounded bg-white p-2 h-50"
+                onClick={() => handleBookClick(book.id)}
               >
                 <img
                   src={book.image}
