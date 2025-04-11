@@ -8,11 +8,11 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import fetchBooks from "@/api/books/fetchBooks";
-import { useNavigate } from "react-router-dom"; // 👈
+import { useNavigate } from "react-router-dom";
 
 export default function Homepage() {
   const isMobile = useIsMobile();
-  const navigate = useNavigate(); // 👈
+  const navigate = useNavigate();
   const [books, setBooks] = useState<any[]>([]);
 
   useEffect(() => {
