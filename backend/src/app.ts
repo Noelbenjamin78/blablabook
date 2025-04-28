@@ -11,9 +11,23 @@ dotenv.config();
 
 const app = express();
 
+const allowedOrigins = [
+  'http://localhost:3000',
+  'http://yannicksendrey-server.eddi.cloud:3000',
+  'https://blablabook.live'
+];
+
+// Middleware to handle CORS
 app.use(cors({
-    origin: 'http://localhost:3000'
-  }));
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error(`CORS blocked: origin ${origin} not allowed.`));
+    }
+  },
+  credentials: true
+}));
 app.use(express.json());
 
 app.use('/api/books', booksRoutes);
