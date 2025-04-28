@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import './db'; 
+import './db';
 import booksRoutes from './routes/books.routes';
 import searchRoutes from './routes/search.routes';
 import libraryRoutes from './routes/library.routes';
