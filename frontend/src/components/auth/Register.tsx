@@ -67,7 +67,7 @@ const Register: React.FC<{ onRegister: (name: string, email: string, password: s
             }
 
             alert('Inscription réussie !');
-            window.location.href = '/accueil';
+            window.location.href = '/login';
         } catch (error) {
             console.error("Erreur lors de l'inscription :", error);
             alert('Une erreur est survenue.');
@@ -173,11 +173,6 @@ const Register: React.FC<{ onRegister: (name: string, email: string, password: s
                                         <FormMessage />
                                     </FormItem>
                                 )}
-                            />
-                            <Button
-                                type="submit"
-                                variant="defaultNoHover"
-                                className="w-full bg-app-bg text-black border border-black"
                             />
                             <Button
                                 type="submit"
