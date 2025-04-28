@@ -9,6 +9,6 @@ setTimeout(() => {
     pool.connect()
       .then(() => console.log('🟢 Connected to PostgreSQL'))
       .catch(err => console.error('🔴 PostgreSQL connection error', err));
-  }, 5000); 
+  }, 5000);
 
 export default pool;
