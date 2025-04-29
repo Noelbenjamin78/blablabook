@@ -35,8 +35,11 @@ export default function Homepage() {
     books.forEach((book) => {
       if (!categories.has(book.genre_name)) {
         categories.add(book.genre_name);
-        const filteredBooks = books.filter((b) => b.genre_name === book.genre_name);
-        const randomBook = filteredBooks[Math.floor(Math.random() * filteredBooks.length)];
+        const filteredBooks = books.filter(
+          (b) => b.genre_name === book.genre_name,
+        );
+        const randomBook =
+          filteredBooks[Math.floor(Math.random() * filteredBooks.length)];
         uniqueBooks.push(randomBook);
       }
     });
@@ -66,10 +69,10 @@ export default function Homepage() {
             {uniqueBooks.map((book) => (
               <div
                 key={book.id}
-                className="book text-center cursor-pointer"
+                className="book cursor-pointer text-center"
                 onClick={() => handleBookClick(book.id)}
               >
-                <Card className="transition-all hover:shadow-xl">
+                <Card className="bg-app-bg-darker transition-all hover:shadow-xl">
                   <CardContent className="p-4">
                     <img
                       src={book.image}

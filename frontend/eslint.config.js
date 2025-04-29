@@ -37,7 +37,6 @@ export default [
             ...eslintConfigPrettier.rules,
             'prettier/prettier': 'error',
             'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
-            indent: ['error', 4],
         },
     },
 ];

@@ -279,3 +279,27 @@ VALUES
     'Les aventures d''Anne Shirley, une orpheline vive et imaginative, adoptée par un couple de fermiers sur l''Île-du-Prince-Édouard.',
     5
   );
+
+INSERT INTO "user" (username, email, password) VALUES
+    ('alice', 'alice@example.com', 'motdepasse1'),
+    ('bob', 'bob@example.com', 'motdepasse2'),
+    ('charlie', 'charlie@example.com', 'motdepasse3'),
+    ('david', 'david@example.com', 'motdepasse4'),
+    ('eve', 'eve@example.com', 'motdepasse5'),
+    ('frank', 'frank@example.com', 'motdepasse6'),
+    ('grace', 'grace@example.com', 'motdepasse7'),
+    ('heidi', 'heidi@example.com', 'motdepasse8'),
+    ('ivan', 'ivan@example.com', 'motdepasse9'),
+    ('judy', 'judy@example.com', 'motdepasse10');
+
+INSERT INTO library (user_id, book_id, status) VALUES
+    (1, 1, 0),
+    (2, 2, 1),
+    (3, 3, 0),
+    (4, 4, 1),
+    (5, 5, 0),
+    (6, 6, 1),
+    (7, 7, 0),
+    (8, 8, 1),
+    (9, 9, 0),
+    (10, 10, 1);

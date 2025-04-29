@@ -1,6 +1,5 @@
 const fetchBooks = async () => {
   try {
-    console.log("API URL:", `${import.meta.env.VITE_API_URL}/books`);
     const response = await fetch(`${import.meta.env.VITE_API_URL}/books`);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
