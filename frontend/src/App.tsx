@@ -13,6 +13,9 @@ import { Toaster } from './components/ui/sonner';
 import { toast } from 'sonner';
 import { Smile } from 'lucide-react';
 import Homepage from './pages/Homepage';
+import Contact from './components/Contact';
+import Apropos from './components/Apropos';
+import Rgpd from './components/Rgpd';
 
 function App() {
     const handleLoginSuccess = () => {
@@ -57,6 +60,11 @@ function App() {
                     <Route path="/library/books-to-read" element={<BooksToRead />} />
                     <Route path="/books" element={<BooksList />} />
                     <Route path="/book/:id" element={<BookItem />} />
+                    <Route path="/contact" element={<Contact />} />
+                    <Route path="/apropos" element={<Apropos />} />
+                    <Route path="/rgpd" element={<Rgpd />} />
+
+
                 </Routes>
             </div>
             <Footer />
