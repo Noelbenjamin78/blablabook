@@ -76,17 +76,7 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
     }
   };
 
-<<<<<<< HEAD
-            navigate('/');
-            window.location.reload();
-        } catch (error) {
-            console.error('Erreur lors de la connexion :', error);
-            alert('Une erreur est survenue.');
-        }
-    };
-=======
   const isMobile = useIsMobile();
->>>>>>> d86c934 (feat: add book read and to read in library and saved in DB and lint and button bg color)
 
   return (
     <div className="flex min-h-screen flex-col">

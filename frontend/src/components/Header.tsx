@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search, Menu } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -89,7 +88,7 @@ const Header: React.FC = () => {
                   <Button
                     asChild
                     variant="defaultNoHover"
-                    className="text-title-gold mr-2 bg-app-bg"
+                    className="text-title-gold bg-app-bg mr-2"
                   >
                     <a href="/register">Inscription</a>
                   </Button>

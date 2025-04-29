@@ -35,8 +35,11 @@ export default function Homepage() {
     books.forEach((book) => {
       if (!categories.has(book.genre_name)) {
         categories.add(book.genre_name);
-        const filteredBooks = books.filter((b) => b.genre_name === book.genre_name);
-        const randomBook = filteredBooks[Math.floor(Math.random() * filteredBooks.length)];
+        const filteredBooks = books.filter(
+          (b) => b.genre_name === book.genre_name,
+        );
+        const randomBook =
+          filteredBooks[Math.floor(Math.random() * filteredBooks.length)];
         uniqueBooks.push(randomBook);
       }
     });
@@ -63,16 +66,7 @@ export default function Homepage() {
               isMobile ? "" : "grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
             }`}
           >
-<<<<<<< HEAD
             {uniqueBooks.map((book) => (
-=======
-            {(isMobile
-              ? randomBook
-                ? [randomBook]
-                : []
-              : uniqueBooksByCategory()
-            ).map((book) => (
->>>>>>> d86c934 (feat: add book read and to read in library and saved in DB and lint and button bg color)
               <div
                 key={book.id}
                 className="book cursor-pointer text-center"
