@@ -18,17 +18,27 @@ jobs:
           cd /var/www/html/apo/projet-01-blablabook
           git checkout prod
           git pull origin main
-
-          if ! git merge origin/main -m 'CI/CD: auto-merge main into prod'; then
+          echo "🔀 Merging main into prod..."
+          if ! git merge origin/main -m "CI/CD: auto-merge main into prod"; then
             echo "[`date '+%Y-%m-%d %H:%M:%S'`] ❌ Merge failed" >> deploy.log
+            exit 1
+          fi
+
+      - name: Ensure .env is in place
+        run: |
+          cd /var/www/html/apo/projet-01-blablabook
+          if [ -f .env.prod ]; then
+            cp .env.prod .env
+            echo "✅ .env file ready"
+          else
+            echo "[`date '+%Y-%m-%d %H:%M:%S'`] ❌ Missing .env.prod file" >> deploy.log
             exit 1
           fi
 
       - name: Rebuild and restart containers
         run: |
           cd /var/www/html/apo/projet-01-blablabook
-          if ! docker compose down && docker compose up -d --build; then
-            echo "[`date '+%Y-%m-%d %H:%M:%S'`] ❌ Docker rebuild failed" >> deploy.log
-            exit 1
-          fi
+          echo "📦 Rebuilding containers..."
+          docker compose down
+          docker compose up -d --build
           echo "[`date '+%Y-%m-%d %H:%M:%S'`] ✅ Deploy success from main to prod" >> deploy.log
