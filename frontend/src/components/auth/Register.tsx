@@ -51,7 +51,7 @@ const Register: React.FC<{ onRegister: (name: string, email: string, password: s
         };
 
         try {
-            const response = await fetch('http://localhost:5000/api/auth/register', {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/register`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -174,11 +174,6 @@ const Register: React.FC<{ onRegister: (name: string, email: string, password: s
                                         <FormMessage />
                                     </FormItem>
                                 )}
-                            />
-                            <Button
-                                type="submit"
-                                variant="defaultNoHover"
-                                className="w-full bg-app-bg text-black border border-black"
                             />
                             <Button
                                 type="submit"

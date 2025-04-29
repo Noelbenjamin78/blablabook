@@ -119,6 +119,7 @@ const Header: React.FC = () => {
                                                 <Button asChild variant="defaultNoHover" className="bg-white text-title-gold mr-2">
                                                     <a href="/register">Inscription</a>
                                                 </Button>
+                                                
                                                 <Button asChild variant="defaultNoHover" className="bg-white text-title-gold">
                                                     <a href="/login">Connexion</a>
                                                 </Button>
