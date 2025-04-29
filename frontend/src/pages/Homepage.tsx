@@ -63,13 +63,22 @@ export default function Homepage() {
               isMobile ? "" : "grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
             }`}
           >
+<<<<<<< HEAD
             {uniqueBooks.map((book) => (
+=======
+            {(isMobile
+              ? randomBook
+                ? [randomBook]
+                : []
+              : uniqueBooksByCategory()
+            ).map((book) => (
+>>>>>>> d86c934 (feat: add book read and to read in library and saved in DB and lint and button bg color)
               <div
                 key={book.id}
-                className="book text-center cursor-pointer"
+                className="book cursor-pointer text-center"
                 onClick={() => handleBookClick(book.id)}
               >
-                <Card className="transition-all hover:shadow-xl">
+                <Card className="bg-app-bg-darker transition-all hover:shadow-xl">
                   <CardContent className="p-4">
                     <img
                       src={book.image}

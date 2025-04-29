@@ -14,7 +14,7 @@ RUN npm install
 COPY . .
 
 # Installer ESLint globalement si nécessaire
-RUN npm install -g eslint
+# RUN npm install -g eslint
 
 # Exposer le port sur lequel l'application va tourner
 EXPOSE 5000
