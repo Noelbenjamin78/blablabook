@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 export default function Homepage() {
   const isMobile = useIsMobile();
   const navigate = useNavigate();
-  const [books, setBooks] = useState<any[]>([]);
+  const [books, setBooks] = useState<Array[]>([]);
 
   useEffect(() => {
     const loadBooks = async () => {
@@ -28,22 +28,27 @@ export default function Homepage() {
     loadBooks();
   }, []);
 
+  const getUniqueBookForEachCategory = () => {
+    const categories = new Set();
+    const uniqueBooks: Array[] = [];
+
+    books.forEach((book) => {
+      if (!categories.has(book.genre_name)) {
+        categories.add(book.genre_name);
+        const filteredBooks = books.filter((b) => b.genre_name === book.genre_name);
+        const randomBook = filteredBooks[Math.floor(Math.random() * filteredBooks.length)];
+        uniqueBooks.push(randomBook);
+      }
+    });
+
+    return uniqueBooks;
+  };
+
   const handleBookClick = (id: number) => {
     navigate(`/book/${id}`);
   };
 
-  const uniqueBooksByCategory = () => {
-    const seen = new Set();
-    return books.filter((book) => {
-      if (!seen.has(book.genre_name)) {
-        seen.add(book.genre_name);
-        return true;
-      }
-      return false;
-    });
-  };
-
-  const randomBook = books[Math.floor(Math.random() * books.length)];
+  const uniqueBooks = getUniqueBookForEachCategory();
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -58,7 +63,7 @@ export default function Homepage() {
               isMobile ? "" : "grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
             }`}
           >
-            {(isMobile ? (randomBook ? [randomBook] : []) : uniqueBooksByCategory()).map((book) => (
+            {uniqueBooks.map((book) => (
               <div
                 key={book.id}
                 className="book text-center cursor-pointer"

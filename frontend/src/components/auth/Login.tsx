@@ -52,7 +52,8 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
 
             if (onLoginSuccess) onLoginSuccess();
 
-            navigate('/accueil');
+            navigate('/');
+            window.location.reload();
         } catch (error) {
             console.error('Erreur lors de la connexion :', error);
             alert('Une erreur est survenue.');
@@ -63,8 +64,8 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
 
     return (
         <div className="flex flex-col min-h-screen">
-            <main className="flex-grow flex flex-col items-center justify-center px-4 space-y-6">
-                <h1 className={`text-4xl md:text-3xl font-bold text-center mt-4 md:mt-6 text-title-gold`}>CONNEXION</h1>
+                <h1 className="text-4xl md:text-3xl font-bold text-center mt-6 md:mt-6 title-gold " >CONNEXION</h1>
+                <main className="flex-grow flex flex-col items-center justify-center px-4 space-y-6">
                 <div
                     className={`mx-auto mt-8 w-full ${isMobile ? '' : 'max-w-md'} p-4 md:p-6 shadow-md rounded-lg bg-app-bg-darker`}>
                     <Form {...form}>
