@@ -1,0 +1,34 @@
+name: Deploy Blablabook to Production
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Merge main into prod
+        run: |
+          cd /var/www/html/apo/projet-01-blablabook
+          git checkout prod
+          git pull origin main
+
+          if ! git merge origin/main -m 'CI/CD: auto-merge main into prod'; then
+            echo "[`date '+%Y-%m-%d %H:%M:%S'`] ❌ Merge failed" >> deploy.log
+            exit 1
+          fi
+
+      - name: Rebuild and restart containers
+        run: |
+          cd /var/www/html/apo/projet-01-blablabook
+          if ! docker compose down && docker compose up -d --build; then
+            echo "[`date '+%Y-%m-%d %H:%M:%S'`] ❌ Docker rebuild failed" >> deploy.log
+            exit 1
+          fi
+          echo "[`date '+%Y-%m-%d %H:%M:%S'`] ✅ Deploy success from main to prod" >> deploy.log
