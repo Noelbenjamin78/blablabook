@@ -1,15 +1,18 @@
-import React from 'react';
+import React from "react";
+import { Link } from "react-router-dom";
 
 const Footer: React.FC = () => {
-    return (
-        <footer className="fixed bottom-0 bg-secondary-blue text-white py-4 w-full">
-            <div className="text-center">
-                <a href="/rgpd" className='mr-5'>Politique de confidentialité</a>
-                <a href="apropos">À propos</a>
-                <p className="text-sm">© 2025 BlaBlaBook. Tous droits réservés.</p>
-            </div>
-        </footer>
-    );
+  return (
+    <footer className="bg-secondary-blue fixed bottom-0 w-full py-4 text-white">
+      <div className="text-center">
+        <Link to="/rgpd" className="mr-5">
+          Politique de confidentialité
+        </Link>
+        <Link to="apropos">À propos</Link>
+        <p className="text-sm">© 2025 BlaBlaBook. Tous droits réservés.</p>
+      </div>
+    </footer>
+  );
 };
 
 export default Footer;

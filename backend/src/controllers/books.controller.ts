@@ -9,12 +9,12 @@ export const getBooks = async (req: Request, res: Response): Promise<void> => {
       res.status(500).json({ error: 'Erreur lors de la récupération des livres' });
     }
   };
-  
+
 export const getBook = async (req: Request, res: Response): Promise<void> => {
     const id = parseInt(req.params.id, 10);
     if (isNaN(id)) {
        res.status(400).json({ error: 'ID invalide' });
-       return; // escape the bloc code, return res.stats() doesn't satisfy typescript requirements
+       return;
     }
   
     try {

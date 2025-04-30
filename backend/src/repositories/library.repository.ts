@@ -2,7 +2,7 @@ import db from '../db';
 import { NewLibraryEntry, LibraryEntry } from '../types/library';
 
 export const addToLibrary = async (entry: NewLibraryEntry): Promise<LibraryEntry> => {
-  const { user_id, book_id, status = 0 } = entry;
+  const { user_id, book_id, status } = entry;
 
   const result = await db.query(
     `
@@ -54,4 +54,11 @@ export const getLibraryByUser = async (userId: number, status?: number): Promise
 
   const result = await db.query(query, values);
   return result.rows;
+};
+
+export const getLibraryByUserId = async (userId: number) => {
+    const sql = 'SELECT * FROM library WHERE user_id = $1';
+    const values = [userId];
+    const result = await db.query(sql, values);
+    return result.rows;
 };
