@@ -1,8 +1,5 @@
 const fetchUserBooks = async (userId: string, status?: "read" | "toread") => {
   const token = localStorage.getItem("token");
-  console.log("token", token);
-  console.log("typeof", typeof token);
-
   if (!token) {
     console.error("Token manquant");
     return;
@@ -31,7 +28,6 @@ const fetchUserBooks = async (userId: string, status?: "read" | "toread") => {
   }
 
   const data = await response.json();
-  console.log("data", data);
   return data;
 };
 

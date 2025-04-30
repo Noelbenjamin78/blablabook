@@ -19,7 +19,6 @@ import { useBookWithStatus } from "@/hooks/useBookWithStatus";
 
 const BookItem = () => {
   const { id } = useParams();
-  console.log("Book ID from URL:", id);
   const isMobile = useIsMobile();
 
   const {
@@ -52,7 +51,7 @@ const BookItem = () => {
   }
 
   return (
-    <div className="mt-24 flex justify-center px-4">
+    <div className="mt-24 flex justify-center px-4 pb-6">
       <Card className="bg-app-bg-darker text-title-gold mx-2 mb-4 w-full max-w-3xl space-y-6 rounded-2xl p-6 shadow-xl md:mb-6 lg:mb-8">
         <h1 className="mb-4 text-center text-3xl font-bold md:text-4xl">
           {book.title}

@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const loginSchema = z.object({
   email: z.string().email("Email invalide"),
@@ -56,8 +57,6 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
       }
 
       const { token, userId } = await response.json();
-      console.log("Utilisateur connecté :", token);
-      console.log("Utilisateur connecté :", userId);
 
       localStorage.setItem("token", token);
       localStorage.setItem("userId", userId);
@@ -126,12 +125,12 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                 )}
               />
               <div className="text-right">
-                <a
-                  href="/forgot-password"
+                <Link
+                  to="/forgot-password"
                   className="text-sm text-blue-500 hover:underline"
                 >
                   Mot de passe oublié ?
-                </a>
+                </Link>
               </div>
               <Button
                 type="submit"

@@ -31,7 +31,6 @@ const BooksRead = () => {
     const fetchData = async () => {
       if (userId) {
         const books = await fetchUserBooks(userId, "read");
-        console.log("books", books);
         setReadBooks(books);
       }
     };
