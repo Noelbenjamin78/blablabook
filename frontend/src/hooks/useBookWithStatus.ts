@@ -1,4 +1,3 @@
-// hooks/useBookWithStatus.ts
 import fetchBookById from "@/api/books/fetchBookId";
 import { useState, useCallback } from "react";
 import { Book } from "../../../backend/src/types/book";
@@ -18,23 +17,25 @@ export const useBookWithStatus = (bookId: string | undefined) => {
 
       const userId = localStorage.getItem("userId");
       const token = localStorage.getItem("token");
-      if (!userId || !token) throw new Error("Non connecté");
 
-      const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/library/user/${userId}/book/${bookId}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      );
+      if (userId && token) {
+        
+        const res = await fetch(
+          `${import.meta.env.VITE_API_URL}/library/user/${userId}/book/${bookId}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          },
+        );
 
-      if (!res.ok && res.status !== 404)
-        throw new Error("Erreur de récupération");
+        if (!res.ok && res.status !== 404)
+          throw new Error("Erreur de récupération");
 
-      if (res.status === 404) return;
-
-      const entry = await res.json();
-      setIsRead(entry.status === 1);
-      setToRead(entry.status === 0);
+        if (res.status !== 404) {
+          const entry = await res.json();
+          setIsRead(entry.status === 1);
+          setToRead(entry.status === 0);
+        }
+      }
     } catch (e) {
       setBook(null);
       console.error(e);

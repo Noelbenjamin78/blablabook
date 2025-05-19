@@ -21,6 +21,8 @@ const BookItem = () => {
   const { id } = useParams();
   const isMobile = useIsMobile();
 
+  const logged = localStorage.getItem("token") !== null;
+
   const {
     book,
     isRead: bookRead,
@@ -149,49 +151,53 @@ const BookItem = () => {
           <p className="text-xl italic">{book.description}</p>
         </div>
 
-        {!bookRead && !bookToRead ? (
-          <p className="text-title-gold md:text-xl xl:text-2xl">
-            Statut: Non ajouté à votre bibliothèque
-          </p>
-        ) : bookToRead ? (
-          <div className="flex items-center space-x-2">
-            <BookOpen size={24} className="text-title-gold" />{" "}
+        {logged && (
+        <>
+          {!bookRead && !bookToRead ? (
             <p className="text-title-gold md:text-xl xl:text-2xl">
-              Statut: À lire
+              Statut: Non ajouté à votre bibliothèque
             </p>
-          </div>
-        ) : bookRead ? (
-          <div className="flex items-center space-x-2">
-            <Check size={24} className="text-green-500" />{" "}
-            <p className="text-title-gold md:text-xl xl:text-2xl">
-              Statut: Livre lu
-            </p>
-          </div>
-        ) : null}
+          ) : bookToRead ? (
+            <div className="flex items-center space-x-2">
+              <BookOpen size={24} className="text-title-gold" />{" "}
+              <p className="text-title-gold md:text-xl xl:text-2xl">
+                Statut: À lire
+              </p>
+            </div>
+          ) : bookRead ? (
+            <div className="flex items-center space-x-2">
+              <Check size={24} className="text-green-500" />{" "}
+              <p className="text-title-gold md:text-xl xl:text-2xl">
+                Statut: Livre lu
+              </p>
+            </div>
+          ) : null}
 
-        {isMobile ? (
-          <div className="flex justify-center space-x-2">
-            {!bookRead && !bookToRead ? (
-              <div className="flex space-x-2">
+          {isMobile ? (
+            <div className="flex justify-center space-x-2">
+              {!bookRead && !bookToRead ? (
+                <div className="flex space-x-2">
+                  <AddReadBookButton onStatusChange={loadBook} />
+                  <AddToReadBookButton onStatusChange={loadBook} />
+                </div>
+              ) : bookToRead ? (
                 <AddReadBookButton onStatusChange={loadBook} />
-                <AddToReadBookButton onStatusChange={loadBook} />
-              </div>
-            ) : bookToRead ? (
-              <AddReadBookButton onStatusChange={loadBook} />
-            ) : bookRead ? null : null}
-          </div>
-        ) : (
-          <div className="flex justify-center space-x-2">
-            {!bookRead && !bookToRead ? (
-              <div className="flex space-x-4">
+              ) : bookRead ? null : null}
+            </div>
+          ) : (
+            <div className="flex justify-center space-x-2">
+              {!bookRead && !bookToRead ? (
+                <div className="flex space-x-4">
+                  <AddReadBookButton onStatusChange={loadBook} />
+                  <AddToReadBookButton onStatusChange={loadBook} />
+                </div>
+              ) : bookToRead ? (
                 <AddReadBookButton onStatusChange={loadBook} />
-                <AddToReadBookButton onStatusChange={loadBook} />
-              </div>
-            ) : bookToRead ? (
-              <AddReadBookButton onStatusChange={loadBook} />
-            ) : bookRead ? null : null}
-          </div>
-        )}
+              ) : bookRead ? null : null}
+            </div>
+          )}
+        </>
+      )}
       </Card>
     </div>
   );
