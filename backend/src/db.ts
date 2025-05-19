@@ -7,7 +7,7 @@ const pool = new Pool({
 // setTimeout to delay the connection attempt, test would fail if the database is not ready
 setTimeout(() => {
     pool.connect()
-      .then(() => console.log('🟢 Connected to PostgreSQL'))
+      .then()
       .catch(err => console.error('🔴 PostgreSQL connection error', err));
   }, 5000);
 
