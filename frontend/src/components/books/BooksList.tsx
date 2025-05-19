@@ -34,12 +34,12 @@ const BooksList = () => {
   }, []);
 
   return (
-    <div>
-      <h1 className="text-title-gold mb-8 pt-20 text-center text-4xl font-bold md:mb-28 md:text-5xl">
+    <div className="mb-16">
+      <h1 className="text-title-gold mb-8 pt-18 text-center text-4xl font-bold md:mb-28 md:text-5xl">
         Tous les livres
       </h1>
       <div className="flex justify-center">
-        <Card className="bg-app-bg-darker h-4/5 w-3/4 scale-90 px-3 md:scale-100 lg:scale-110">
+        <Card className="bg-app-bg-darker h-4/5 scale-90 px-3 md:scale-100 lg:scale-110">
           {isMobile ? (
             <Table className="bg-app-bg-darker h-4/5 w-fit items-center justify-center text-xl">
               <TableBody>
@@ -74,10 +74,10 @@ const BooksList = () => {
               </TableBody>
             </Table>
           ) : (
-            <Table className="bg-app-bg-darker h-4/5 w-fit items-center justify-center text-xl">
+            <Table className="bg-app-bg-darker h-4/5 w-4/5 items-center justify-center text-xl">
               {books.length > 0 && (
                 <TableHeader className="text-title-gold space-x-16">
-                  <TableRow>
+                  <TableRow className="pointer-events-none">
                     <TableHead className="text-title-gold text-left text-2xl font-bold">
                       Titre
                     </TableHead>
@@ -92,10 +92,10 @@ const BooksList = () => {
                   books.map((book) => (
                     <TableRow
                       key={book.title}
-                      className="border-title-gold hover:bg-app-bg-light cursor-pointer border-b-1 transition"
+                      className="border-title-gold hover:bg-app-bg cursor-pointer border-b-1 transition"
                       onClick={() => handleBookClick(book.id)}
                     >
-                      <TableCell className="text-left text-xl font-semibold italic md:text-2xl lg:text-3xl">
+                      <TableCell className="text-left text-lg font-semibold italic md:text-xl lg:text-2xl">
                         {book.title}
                       </TableCell>
                       <TableCell className="text-left">{book.author}</TableCell>

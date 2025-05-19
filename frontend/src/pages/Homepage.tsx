@@ -54,7 +54,7 @@ export default function Homepage() {
   const uniqueBooks = getUniqueBookForEachCategory();
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col pb-6">
       <main className="flex flex-grow flex-col">
         <h1 className="mt-6 text-center text-2xl font-bold">
           Réunion de passionnés
@@ -78,10 +78,12 @@ export default function Homepage() {
                       src={book.image}
                       alt={book.title}
                       className={`mx-auto transition-all ${
-                        isMobile ? "h-auto w-full" : "h-72 w-48"
+                        isMobile ? "h-45 w-45" : "h-72 w-48"
                       }`}
                     />
-                    <CardTitle className="mt-2 text-xl font-semibold">
+                    <CardTitle
+                      className={`mt-2 font-semibold ${isMobile ? "text-lg" : "text-xl"}`}
+                    >
                       {book.title}
                     </CardTitle>
                     <CardDescription className="text-sm text-gray-500">

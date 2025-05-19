@@ -4,23 +4,53 @@ import { NewLibraryEntry, LibraryEntry } from '../types/library';
 export const addToLibrary = async (entry: NewLibraryEntry): Promise<LibraryEntry> => {
   const { user_id, book_id, status } = entry;
 
-  const result = await db.query(
+  // Check if the book is already in the user's library
+  const existingEntry = await db.query(
     `
-    INSERT INTO library (user_id, book_id, status)
-    VALUES ($1, $2, $3)
-    RETURNING *
+    SELECT * FROM library 
+    WHERE user_id = $1 AND book_id = $2
     `,
-    [user_id, book_id, status]
+    [user_id, book_id]
   );
 
-  return result.rows[0];
+  if (existingEntry.rows.length > 0) {
+    const currentStatus = existingEntry.rows[0].status;
+    const newStatus = currentStatus === 1 ? 0 : 1; 
+
+    const updateResult = await db.query(
+      `
+      UPDATE library
+      SET status = $1
+      WHERE user_id = $2 AND book_id = $3
+      RETURNING *
+      `,
+      [newStatus, user_id, book_id]
+    );
+
+    return updateResult.rows[0];
+  } else {
+    const insertResult = await db.query(
+      `
+      INSERT INTO library (user_id, book_id, status)
+      VALUES ($1, $2, $3)
+      RETURNING *
+      `,
+      [user_id, book_id, status]
+    );
+
+    return insertResult.rows[0];
+  }
 };
 
-export const removeFromLibrary = async (id: number): Promise<boolean> => {
+
+export const removeFromLibrary = async (bookId: number, userId:number): Promise<boolean> => {
   const result = await db.query(
-    `DELETE FROM library WHERE id = $1`,
-    [id]
+    `DELETE FROM library 
+    WHERE book_id = $1 AND
+    user_id = $2`,
+    [bookId, userId]
   );
+
   return (result.rowCount ?? 0) > 0;
 };
 
