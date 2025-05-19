@@ -72,7 +72,7 @@ export default function Homepage() {
                 className="book cursor-pointer text-center"
                 onClick={() => handleBookClick(book.id)}
               >
-                <Card className="bg-app-bg-darker transition-all hover:shadow-xl">
+                <Card className={`bg-app-bg-darker transition-all hover:shadow-xl ${isMobile ? "w-auto h-auto" : "w-auto h-120"} `}>
                   <CardContent className="p-4">
                     <img
                       src={book.image}
