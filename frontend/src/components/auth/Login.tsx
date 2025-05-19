@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import { Link } from "react-router-dom";
 
 const loginSchema = z.object({
@@ -66,7 +67,9 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
       }
 
       if (onLoginSuccess) onLoginSuccess();
-
+      toast.success("Connexion réussie !", {
+        duration: 2000,
+      });
       navigate("/library");
       window.location.reload();
     } catch (error) {
