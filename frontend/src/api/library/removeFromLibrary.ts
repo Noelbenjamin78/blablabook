@@ -26,7 +26,7 @@ export const handleRemoveFromLibrary = async (
 
     const text = await response.text();
     if (text) {
-      console.log("Livre supprimé de la bibliothèque:", JSON.parse(text));
+      
     }
     fetchData();
   } catch (error) {

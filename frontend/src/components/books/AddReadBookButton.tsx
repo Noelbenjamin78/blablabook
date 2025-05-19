@@ -56,7 +56,6 @@ const AddReadBookButton = ({
       }
 
       const data = await response.json();
-      console.log("Livre ajouté comme lu:", data);
       handleAddReadBookSuccess();
       onStatusChange();
     } catch (error) {

@@ -22,7 +22,7 @@ function SearchMethods({ books, openTrigger }: Props) {
   const isMobile = useIsMobile();
   const navigate = useNavigate();
 
-  console.log(books);
+  
 
   useEffect(() => {
     if (openTrigger) {

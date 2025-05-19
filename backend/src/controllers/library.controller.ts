@@ -3,7 +3,7 @@ import { addToLibrary, removeFromLibrary, updateLibraryStatus, getLibraryByUser 
 
 export const createLibraryEntry = async (req: Request, res: Response): Promise<void> => {
   const { user_id, book_id, status } = req.body;
-  console.log("Received data:", { user_id, book_id, status });
+  
 
   if (!user_id || !book_id || status === undefined) {
     res.status(400).json({ error: 'user_id, book_id et status sont requis' });
@@ -98,8 +98,7 @@ export const getUserBookEntry = async (req: Request, res: Response): Promise<voi
     const userId = parseInt(req.params.userId, 10);
     const bookId = parseInt(req.params.bookId, 10);
 
-    console.log("User ID:", userId);
-    console.log("Book ID:", bookId);
+    
   
     if (isNaN(userId) || isNaN(bookId)) {
       res.status(400).json({ error: 'userId ou bookId invalide' });
@@ -108,7 +107,7 @@ export const getUserBookEntry = async (req: Request, res: Response): Promise<voi
   
     try {
       const entry = await getLibraryByUser(userId); // Assuming this function can return all entries
-      console.log("Library Entries:", entry);
+      
       const bookEntry = entry.find((book) => book.book_id === bookId);
   
       if (!bookEntry) {
