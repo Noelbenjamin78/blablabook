@@ -19,22 +19,24 @@ export const createLibraryEntry = async (req: Request, res: Response): Promise<v
 };
 
 export const deleteLibraryEntry = async (req: Request, res: Response): Promise<void> => {
-  const id = parseInt(req.params.id, 10);
+  const bookId = parseInt(req.params.bookId, 10);
+  const userId = parseInt(req.params.userId, 10);
 
-  if (isNaN(id)) {
-    res.status(400).json({ error: 'ID invalide' });
+
+  if (isNaN(bookId) || isNaN(userId)) {
+    res.status(400).json({ error: 'book_id ou user_id invalide' });
     return;
   }
 
   try {
-    const deleted = await removeFromLibrary(id);
+    const deleted = await removeFromLibrary(userId, bookId);
     if (!deleted) {
       res.status(404).json({ error: 'Entrée non trouvée' });
       return;
     }
     res.status(204).send();
   } catch (err) {
-    res.status(500).json({ error: 'Erreur lors de la suppression' });
+    res.status(500).json({ error: 'Erreur lors de la suppression', err});
   }
 };
 

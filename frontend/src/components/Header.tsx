@@ -6,12 +6,26 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import LogoutButton from "./auth/LogoutButton";
 import SearchMethods from "./methods/SearchMethods";
 import fetchBooks from "@/api/books/fetchBooks";
+import { motion } from "framer-motion";
+import { Separator } from "./ui/separator";
+import { Link } from "react-router-dom";
 
 const Header: React.FC = () => {
   const isMobile = useIsMobile();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [openSearch, setOpenSearch] = useState(false);
   const [books, setBooks] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [showMenuItems, setShowMenuItems] = useState(false);
+
+  useEffect(() => {
+    if (open) {
+      const timer = setTimeout(() => setShowMenuItems(true), 400);
+      return () => clearTimeout(timer);
+    } else {
+      setShowMenuItems(false);
+    }
+  }, [open]);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -41,12 +55,23 @@ const Header: React.FC = () => {
     setOpenSearch(true);
   };
 
+  const menuItems = [
+    { to: "/", label: "Accueil" },
+    { to: "/books", label: "Tous les livres" },
+    ...(isLoggedIn
+      ? [{ to: "/library", label: "Ma bibliothèque" }, { isLogout: true }]
+      : [
+          { to: "/register", label: "Inscription" },
+          { to: "/login", label: "Connexion" },
+        ]),
+  ];
+
   return (
-    <header className="bg-secondary-blue relative w-full py-4 text-white">
+    <header className="bg-secondary-blue w-full border-b border-gray-200 px-4 py-2 text-gray-800">
       <div className="flex items-center justify-between gap-4 px-4">
-        <a href="/" className="text-xl font-bold whitespace-nowrap">
+        <Link to="/" className="text-xl font-bold whitespace-nowrap text-white">
           BlaBlaB<span className="text-title-gold">oo</span>k
-        </a>
+        </Link>
 
         {!isMobile && (
           <>
@@ -57,14 +82,14 @@ const Header: React.FC = () => {
                   variant="defaultNoHover"
                   className="bg-app-bg-darker text-title-gold"
                 >
-                  <a href="/">Accueil</a>
+                  <Link to="/">Accueil</Link>
                 </Button>
                 <Button
                   asChild
                   variant="defaultNoHover"
                   className="bg-app-bg-darker text-title-gold"
                 >
-                  <a href="/books">Tous les livres</a>
+                  <Link to="/books">Tous les livres</Link>
                 </Button>
                 {isLoggedIn && (
                   <Button
@@ -72,7 +97,7 @@ const Header: React.FC = () => {
                     variant="defaultNoHover"
                     className="bg-app-bg-darker text-title-gold"
                   >
-                    <a href="/library">Ma bibliothèque</a>
+                    <Link to="/library">Ma bibliothèque</Link>
                   </Button>
                 )}
               </nav>
@@ -90,14 +115,14 @@ const Header: React.FC = () => {
                     variant="defaultNoHover"
                     className="text-title-gold bg-app-bg mr-2"
                   >
-                    <a href="/register">Inscription</a>
+                    <Link to="/register">Inscription</Link>
                   </Button>
                   <Button
                     asChild
                     variant="defaultNoHover"
                     className="text-title-gold bg-app-bg"
                   >
-                    <a href="/login">Connexion</a>
+                    <Link to="/login">Connexion</Link>
                   </Button>
                 </>
               )}
@@ -111,60 +136,58 @@ const Header: React.FC = () => {
                 <Search className="text-white" size={28} />
               </button>
             </div>
-            <Sheet>
+            <Sheet open={open} onOpenChange={setOpen}>
               <SheetTrigger asChild>
                 <button>
-                  <Menu className="text-white" size={28} />
+                  <Menu className="text-title-gold" size={28} />
                 </button>
               </SheetTrigger>
               <SheetContent
                 side="right"
-                className="bg-secondary-blue w-64 text-white"
+                className="text-app-bg-darker mt-4 mr-4 h-fit w-[60%] max-w-sm rounded-2xl border border-gray-200 bg-white/30 shadow-xl backdrop-blur-lg"
               >
-                <nav className="mt-6 flex flex-col items-center space-y-4 text-lg">
-                  <Button
-                    asChild
-                    variant="defaultNoHover"
-                    className="text-title-gold bg-app-bg"
-                  >
-                    <a href="/accueil">Accueil</a>
-                  </Button>
-                  <Button
-                    asChild
-                    variant="defaultNoHover"
-                    className="text-title-gold bg-app-bg"
-                  >
-                    <a href="/books">Tous les livres</a>
-                  </Button>
-                  {isLoggedIn ? (
-                    <>
-                      <Button
-                        asChild
-                        variant="defaultNoHover"
-                        className="text-title-gold bg-app-bg"
-                      >
-                        <a href="/library">Ma bibliothèque</a>
-                      </Button>
-                      <LogoutButton onLogout={handleLogout} />
-                    </>
-                  ) : (
-                    <>
-                      <Button
-                        asChild
-                        variant="defaultNoHover"
-                        className="text-title-gold bg-app-bg-darker mr-2"
-                      >
-                        <a href="/register">Inscription</a>
-                      </Button>
+                <nav className="bg-opacity-50 mt-8 flex flex-col space-y-4 px-4">
+                  {showMenuItems && (
+                    <div
+                      key={String(showMenuItems)}
+                      className="flex flex-col space-y-4"
+                    >
+                      {menuItems.flatMap((item, index) => {
+                        const content = item.isLogout ? (
+                          <motion.div
+                            key="logout"
+                            initial={{ opacity: 0, x: 20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 0.1 * index }}
+                          >
+                            <LogoutButton onLogout={handleLogout} />
+                          </motion.div>
+                        ) : (
+                          <motion.div
+                            key={item.to}
+                            initial={{ opacity: 0, x: 20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 0.15 * index }}
+                          >
+                            <Link
+                              to={item.to ?? "/"}
+                              className="text-lg font-bold hover:underline"
+                            >
+                              {item.label}
+                            </Link>
+                          </motion.div>
+                        );
 
-                      <Button
-                        asChild
-                        variant="defaultNoHover"
-                        className="text-title-gold bg-app-bg-darker"
-                      >
-                        <a href="/login">Connexion</a>
-                      </Button>
-                    </>
+                        return index < menuItems.length - 1
+                          ? [
+                              content,
+                              <Separator asChild key={`sep-${index}`}>
+                                <div className="h-[1px] self-start bg-stone-200" />
+                              </Separator>,
+                            ]
+                          : [content];
+                      })}
+                    </div>
                   )}
                 </nav>
               </SheetContent>

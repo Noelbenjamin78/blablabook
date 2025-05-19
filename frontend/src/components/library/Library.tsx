@@ -15,7 +15,6 @@ const Library = () => {
   const [readCount, setReadCount] = useState(0);
   const [toReadCount, setToReadCount] = useState(0);
   const userId = localStorage.getItem("userId");
-  console.log("userId", userId);
 
   useEffect(() => {
     const fetchCounts = async () => {
@@ -24,7 +23,7 @@ const Library = () => {
         return;
       }
 
-      const books = await fetchUserBooks(userId, "read");
+      const books = await fetchUserBooks(userId, undefined);
       const read = books.filter(
         (book: BookWithStatus) => book.status === 1,
       ).length;
@@ -35,10 +34,10 @@ const Library = () => {
       setToReadCount(toRead);
     };
     fetchCounts();
-  }, []);
+  }, [userId]);
 
   return (
-    <div className="w-full">
+    <div className="w-full pb-6">
       <h1 className="text-title-gold mb-12 pt-20 text-center text-2xl font-bold md:mb-28 md:text-3xl lg:text-4xl">
         Ma bibliothèque
       </h1>
@@ -46,12 +45,12 @@ const Library = () => {
       {isMobile ? (
         <div className="mb-4 flex flex-col items-center gap-10 px-6">
           <Card
-            className="bg-app-bg-darker my-auto h-100 w-80 cursor-pointer items-center shadow-lg"
+            className="bg-app-bg-darker my-auto h-75 w-65 cursor-pointer items-center shadow-lg"
             onClick={() => navigate("/library/books-read")}
           >
             <CardTitle className="text-title-gold">Mes livres lus</CardTitle>
             <Link to="/books-read"></Link>
-            <img src={libraryRead} alt="" className="h-40 w-40 object-cover" />
+            <img src={libraryRead} alt="" className="h-25 w-25 object-cover" />
             <Separator className="border-title-gold my-1 w-3/5 border-t-2" />
             <CardFooter className="text-title-gold flex space-x-2">
               <Heart />
@@ -60,7 +59,7 @@ const Library = () => {
           </Card>
 
           <Card
-            className="bg-app-bg-darker h-100 w-80 cursor-pointer items-center shadow-lg"
+            className="bg-app-bg-darker h-75 w-65 cursor-pointer items-center shadow-lg"
             onClick={() => navigate("/library/books-to-read")}
           >
             <CardTitle className="text-title-gold">Mes livres à lire</CardTitle>
@@ -68,7 +67,7 @@ const Library = () => {
             <img
               src={libraryToRead}
               alt=""
-              className="h-40 w-40 object-cover"
+              className="h-25 w-25 object-cover"
             />
             <Separator className="border-title-gold my-1 w-3/5 border-t-2" />
             <CardFooter className="text-title-gold mb-4 flex space-x-2">
