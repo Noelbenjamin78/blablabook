@@ -3,7 +3,6 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -49,121 +48,90 @@ const BooksRead = () => {
   useEffect(() => {
     fetchData();
   }, [userId]);
+
   return (
     <div>
-      <h1 className="text-title-gold mb-12 pt-20 text-center text-4xl font-bold md:mb-28 md:text-5xl">
+      <h1 className="text-title-gold mb-8 pt-12 text-center text-4xl font-bold md:mb-16 md:text-5xl">
         Mes livres lus
       </h1>
-      <div className="flex justify-center">
-        <Card className="bg-app-bg-darker h-4/5 w-fit scale-90 px-3 md:scale-100 lg:scale-110 xl:scale-125">
-          {isMobile ? (
-            <Table className="bg-app-bg-darker h-4/5 w-fit items-center justify-center text-xl">
-              <TableBody>
-                {readBooks.length > 0 ? (
-                  readBooks.map((book: BookWithStatus) => (
-                    <TableRow
-                      key={book.title}
-                      className="border-title-gold cursor-pointer border-b"
+
+      <div className="flex justify-center pb-10">
+        <Card className="bg-app-bg-darker w-3/4 max-w-5xl scale-90 px-3 py-6 md:scale-100 lg:w-130 lg:scale-110 xl:scale-125">
+          <Table className="bg-app-bg-darker h-4/5 w-full text-xl">
+            {!isMobile && readBooks.length > 0 && (
+              <TableHeader className="text-title-gold">
+                <TableRow>
+                  <TableHead className="text-left text-2xl font-bold">
+                    Titre
+                  </TableHead>
+                  <TableHead className="text-left text-2xl font-bold">
+                    Auteur
+                  </TableHead>
+                </TableRow>
+              </TableHeader>
+            )}
+            <TableBody>
+              {readBooks.length > 0 ? (
+                readBooks.map((book) => (
+                  <TableRow
+                    key={book.book_id}
+                    className="border-title-gold cursor-pointer border-b"
+                  >
+                    <TableCell
+                      onClick={() => navigate(`/book/${book.book_id}`)}
+                      className={`py-2 text-left ${isMobile ? "flex flex-col gap-1" : "max-w-[300px] truncate text-lg italic md:text-xl lg:text-2xl"}`}
                     >
-                      <TableCell
-                        className="flex flex-col gap-1 py-2 text-left"
-                        onClick={() => navigate(`/book/${book.book_id}`)}
-                      >
-                        <span className="flex items-baseline italic">
-                          <BookA size={16} className="mr-1.5" />
+                      <span className="flex items-baseline font-semibold">
+                        {isMobile && <BookA size={16} className="mr-1.5" />}
+                        <span className={isMobile ? "italic" : "truncate"}>
                           {book.title}
                         </span>
-                        <span className="flex items-baseline text-sm">
-                          <UserPen size={16} className="mr-1.5" />
-                          {book.author}
-                        </span>
-                      </TableCell>
-                      <TableCell className="text-right py-2">
-                        <button
-                          onClick={() => handleRemove(book.book_id)}
-                          className="cursor-pointer text-red-500 hover:text-red-700"
-                        >
-                          <Trash size={20} />
-                        </button>
-                      </TableCell>
-                    </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell className="text-title-gold py-4 text-center italic">
-                      <p>Aucun livre lu pour le moment...</p>
-                      <img src={empty} alt="" />
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          ) : (
-            <Table className="bg-app-bg-darker h-4/5 w-fit items-center justify-center text-xl">
-              {readBooks.length > 0 && (
-                <TableHeader className="text-title-gold space-x-16">
-                  <TableRow>
-                    <TableHead className="text-title-gold text-left text-2xl font-bold">
-                      Titre
-                    </TableHead>
-                    <TableHead className="text-title-gold text-left text-2xl font-bold">
-                      Auteur
-                    </TableHead>
-                  </TableRow>
-                </TableHeader>
-              )}
-              <TableBody>
-                {readBooks.length > 0 ? (
-                  readBooks.map((book) => (
-                    <TableRow
-                      key={book.title}
-                      className="border-title-gold border-b-1"
-                    >
-                      <TableCell
-                        className="text-left text-xl font-semibold italic md:text-2xl lg:text-3xl"
-                        onClick={() => navigate(`/book/${book.book_id}`)}
+                      </span>
+                      <span
+                        className={`flex items-baseline ${isMobile ? "text-sm" : "hidden"}`}
                       >
-                        {book.title}
-                      </TableCell>
+                        {isMobile && <UserPen size={16} className="mr-1.5" />}
+                        {book.author}
+                      </span>
+                    </TableCell>
+
+                    {!isMobile && (
                       <TableCell className="text-left">{book.author}</TableCell>
-                      <TableCell className="text-right">
-                        <button
-                          onClick={() => handleRemove(book.book_id)}
-                          className="cursor-pointer text-red-500 hover:text-red-700"
-                        >
-                          <Trash size={20} />
-                        </button>
-                      </TableCell>
-                    </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell
-                      colSpan={2}
-                      className="text-title-gold py-4 text-center italic"
-                    >
-                      <p className="text-xl md:text-2xl lg:text-3xl">
-                        Aucun livre lu pour le moment...
-                      </p>
-                      <img width={300} src={empty} alt="" />
+                    )}
+                    <TableCell className="text-right">
+                      <button
+                        onClick={() => handleRemove(book.book_id)}
+                        className="cursor-pointer text-red-500 hover:text-red-700"
+                      >
+                        <Trash size={20} />
+                      </button>
                     </TableCell>
                   </TableRow>
-                )}
-              </TableBody>
-              {readBooks.length > 0 && (
-                <TableFooter className="text-title-gold">
-                  <TableRow>
-                    <TableCell
-                      colSpan={2}
-                      className="col-span-full text-center"
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={isMobile ? 1 : 3}
+                    className="text-title-gold py-4 text-center italic"
+                  >
+                    <p
+                      className={`text-xl ${!isMobile && "md:text-2xl lg:text-3xl"}`}
                     >
-                      {readBooks.length} livre{readBooks.length !== 1 && "s"} lu
-                      {readBooks.length !== 1 && "s"}
-                    </TableCell>
-                  </TableRow>
-                </TableFooter>
+                      Aucun livre lu pour le moment...
+                    </p>
+                    <img src={empty} alt="empty" width={isMobile ? 200 : 300} />
+                  </TableCell>
+                </TableRow>
               )}
-            </Table>
+            </TableBody>
+          </Table>
+
+          {readBooks.length > 0 && (
+            <div className="mt-2 flex justify-center">
+              <div className="text-title-gold mx-auto mt-6 inline-block rounded-lg bg-[#fffbe6] px-6 py-2 text-lg font-semibold shadow-sm">
+                {readBooks.length} livre lu{readBooks.length !== 1 && "s"}
+              </div>
+            </div>
           )}
         </Card>
       </div>

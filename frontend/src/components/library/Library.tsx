@@ -38,7 +38,7 @@ const Library = () => {
 
   return (
     <div className="w-full pb-6">
-      <h1 className="text-title-gold mb-12 pt-20 text-center text-2xl font-bold md:mb-28 md:text-3xl lg:text-4xl">
+      <h1 className="text-title-gold mb-8 pt-16 text-center text-2xl font-bold md:mb-16 md:text-3xl lg:text-4xl">
         Ma bibliothèque
       </h1>
 
@@ -87,7 +87,7 @@ const Library = () => {
                 Mes livres lus
               </CardTitle>
               <img
-                src={libraryToRead}
+                src={libraryRead}
                 alt=""
                 className="my-4 object-cover md:h-30 md:w-30 lg:h-40 lg:w-40"
               />
