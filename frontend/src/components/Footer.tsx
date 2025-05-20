@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-secondary-blue fixed bottom-0 w-full py-4 text-white">
+    <footer data-testid="footer" className="bg-secondary-blue fixed bottom-0 w-full py-4 text-white">
       <div className="text-center">
         <Link to="/rgpd" className="mr-5">
           Politique de confidentialité
