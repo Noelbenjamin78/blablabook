@@ -3,9 +3,11 @@ import path from "path";
 
 export default defineConfig({
   test: {
-    environment: "jsdom",
     globals: true,
-    setupFiles: "./vitest.setup.ts",
+    environment: "node",
+    coverage: {
+      reporter: ["text", "html"],
+    },
   },
   resolve: {
     alias: {
