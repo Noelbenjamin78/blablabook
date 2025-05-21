@@ -3,8 +3,11 @@ import path from "path";
 
 export default defineConfig({
   test: {
-    environment: "jsdom",
     globals: true,
+    environment: "node",
+    coverage: {
+      reporter: ["text", "html"],
+    },
   },
   resolve: {
     alias: {

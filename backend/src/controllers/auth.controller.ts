@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import bcrypt from 'bcryptjs';
+import * as bcrypt from "bcryptjs";
 import jwt from 'jsonwebtoken';
 import { createUser, findUserByEmailOrUsername, findUserByEmail } from '../repositories/auth.repository';
 import { NewUser, User, UserWithPassword } from '../types/user';
