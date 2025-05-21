@@ -16,7 +16,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import fetchUserBooks from "../../api/library/fetchUserBooks";
 import empty from "../../assets/images/empty.svg";
 import { toast } from "sonner";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { handleRemoveFromLibrary } from "@/api/library/removeFromLibrary";
 
 interface BookWithStatus extends Book, User, LibraryEntry {
@@ -54,7 +54,6 @@ const BooksRead = () => {
       <h1 className="text-title-gold mb-8 pt-12 text-center text-4xl font-bold md:mb-16 md:text-5xl">
         Mes livres lus
       </h1>
-
       <div className="flex justify-center pb-10">
         <Card className="bg-app-bg-darker w-3/4 max-w-5xl scale-90 px-3 py-6 md:scale-100 lg:w-130 lg:scale-110 xl:scale-125">
           <Table className="bg-app-bg-darker h-4/5 w-full text-xl">
