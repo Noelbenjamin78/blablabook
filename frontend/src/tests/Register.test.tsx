@@ -64,7 +64,9 @@ beforeEach(() => {
 describe("Register component", () => {
   const onRegisterMock = vi.fn();
 
+
   it("displays all form fields", () => {
+
     render(
       <MemoryRouter>
         <Register onRegister={onRegisterMock} />
@@ -79,7 +81,9 @@ describe("Register component", () => {
     expect(screen.getByTestId("footer")).toBeInTheDocument();
   });
 
+
   it("displays an error if the emails do not match", async () => {
+
     render(
       <MemoryRouter>
         <Register onRegister={onRegisterMock} />
@@ -97,7 +101,9 @@ describe("Register component", () => {
     });
   });
 
+
   it("displays an error if the passwords do not match", async () => {
+
     render(
       <MemoryRouter>
         <Register onRegister={onRegisterMock} />
@@ -115,7 +121,9 @@ describe("Register component", () => {
     });
   });
 
+
   it("sends the data and displays a toast if successful", async () => {
+
     // Mock fetch
     global.fetch = vi.fn().mockResolvedValue({
       ok: true,
@@ -146,7 +154,9 @@ describe("Register component", () => {
     });
   });
 
+
   it("displays an error toast if the request fails", async () => {
+
     global.fetch = vi.fn().mockRejectedValue(new Error("Erreur réseau")) as any;
 
     render(
