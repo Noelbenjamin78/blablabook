@@ -1,6 +1,7 @@
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
 import Login from "./components/auth/Login";
+import ForgotPassword from "./components/auth/ForgotPassword";
 import Register from "./components/auth/Register";
 import Library from "./components/library/Library";
 import BooksRead from "./components/library/BooksRead";
@@ -38,16 +39,12 @@ function App() {
           richColors={true}
         />
         <Routes>
+          <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/" element={<Homepage />} />
           <Route
             path="/login"
             element={
-              <Login
-                onLogin={function (email: string, password: string): void {
-                  throw new Error("Function not implemented.");
-                }}
-                onLoginSuccess={handleLoginSuccess}
-              />
+              <Login onLoginSuccess={handleLoginSuccess} />
             }
           />
           <Route

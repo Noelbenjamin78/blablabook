@@ -14,15 +14,11 @@ export interface AuthenticatedRequest extends Request {
 }
 
 export const verifyToken: RequestHandler = (req, res, next) => {
-  const authHeader = req.headers.authorization;
-
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    res.status(401).json({ error: 'Token manquant ou mal formaté' });
+  const token = req.cookies.token;
+  if (!token) {
+    res.status(401).json({ error: 'Token manquant' });
     return;
   }
-
-  const token = authHeader.split(' ')[1];
-
   try {
     const decoded = jwt.verify(token, SECRET_KEY) as JwtPayload;
     (req as AuthenticatedRequest).user = decoded;

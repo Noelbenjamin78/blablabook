@@ -13,4 +13,5 @@ export type NewUser = {
 
   export type UserWithPassword = User & {
     password: string;
+    resetTokenExpiresAt?: Date;
   };

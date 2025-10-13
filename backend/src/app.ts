@@ -1,4 +1,5 @@
 import express from 'express';
+import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import './db';
@@ -6,6 +7,7 @@ import booksRoutes from './routes/books.routes';
 import searchRoutes from './routes/search.routes';
 import libraryRoutes from './routes/library.routes';
 import authRoutes from './routes/auth.routes';
+
 
 dotenv.config();
 
@@ -29,6 +31,7 @@ app.use(cors({
   credentials: true
 }));
 app.use(express.json());
+app.use(cookieParser());
 
 app.use('/api/books', booksRoutes);
 app.use('/api/search', searchRoutes);
