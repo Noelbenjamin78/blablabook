@@ -1,6 +1,7 @@
 // src/controllers/auth.controller.ts
 import { Request, Response } from 'express';
-import validator from 'validator';
+// Use require to avoid TypeScript declaration issues inside the container
+const validator: any = require('validator');
 import * as bcrypt from "bcryptjs";
 import crypto from "crypto";
 import jwt from 'jsonwebtoken';
@@ -8,7 +9,6 @@ import {
   createUser,
   findUserByEmailOrUsername,
   findUserByEmail,
-  // 👉 à implémenter dans repositories :
   saveResetTokenForUser,
   findUserByResetToken,
   clearResetTokenForUser,
@@ -19,11 +19,9 @@ import {
 import { NewUser, User } from '../types/user';
 
 const SECRET_KEY = process.env.JWT_SECRET || 'blablabook_dev_secret';
-const BCRYPT_ROUNDS = 12; // un peu plus costaud
+const BCRYPT_ROUNDS = 12; 
 const PASSWORD_HISTORY_COUNT = 3;
 const RESET_TOKEN_TTL_MIN = 15;
-
-// --- code register/login : inchangé (tu peux juste passer à 12 rounds) ---
 
 export const register = async (req: Request, res: Response): Promise<void> => {
   const { username, email, password }: NewUser = req.body;
@@ -57,7 +55,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     res.status(400).json({ error: 'Email invalide' });
     return;
   }
-  if (!validator.isLength(password, { min: 6 })) {
+  if (!validator.isLength(password, { min: 12 })) {
     res.status(400).json({ error: 'Mot de passe trop court' });
     return;
   }
@@ -66,10 +64,10 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     const user = await findUserByEmail(email);
     if (!user) { res.status(401).json({ error: 'Identifiants invalides' }); return; }
 
-    const match = await bcrypt.compare(password, user.password);
+    const match = await bcrypt.compare(password, (user as any).password);
     if (!match) { res.status(401).json({ error: 'Identifiants invalides' }); return; }
 
-    const token = jwt.sign({ id: user.id, username: user.username, email: user.email }, SECRET_KEY, { expiresIn: '24h' });
+    const token = jwt.sign({ id: (user as any).id, username: (user as any).username, email: (user as any).email }, SECRET_KEY, { expiresIn: '24h' });
     res
       .cookie('token', token, {
         httpOnly: true,
@@ -78,13 +76,13 @@ export const login = async (req: Request, res: Response): Promise<void> => {
         maxAge: 24 * 60 * 60 * 1000
       })
       .status(200)
-      .json({ userId: user.id });
+      .json({ userId: (user as any).id });
   } catch (err) {
     res.status(500).json({ error: 'Erreur lors de la connexion' });
   }
 };
 
-// --- Nouveau : demande de reset ---
+// --- Demande de reset : génère un token (optionnel si tu ne fais pas d'email) ---
 export const forgotPassword = async (req: Request, res: Response): Promise<void> => {
   const { email } = req.body as { email?: string };
   if (!email) {
@@ -104,7 +102,7 @@ export const forgotPassword = async (req: Request, res: Response): Promise<void>
   const tokenHash = crypto.createHash("sha256").update(raw).digest("hex");
   const expiresAt = new Date(Date.now() + RESET_TOKEN_TTL_MIN * 60 * 1000);
 
-  await saveResetTokenForUser(user.id, tokenHash, expiresAt);
+  await saveResetTokenForUser((user as any).id, tokenHash, expiresAt);
 
   // TODO: envoyer par email. Pour les tests, on log le lien :
   const resetLink = `${process.env.FRONT_URL ?? "http://localhost:5173"}/forgot-password?token=${raw}&email=${encodeURIComponent(email)}`;
@@ -114,46 +112,140 @@ export const forgotPassword = async (req: Request, res: Response): Promise<void>
   return;
 };
 
-// --- Nouveau : réinitialisation avec token ---
+// --- Réinitialisation avec OU sans token (simple, typage permissif) ---
 export const resetPassword = async (req: Request, res: Response): Promise<void> => {
-  const { token, email, newPassword } = req.body as { token?: string; email?: string; newPassword?: string; };
-  if (!token || !email || !newPassword) {
-    res.status(400).json({ error: "Paramètres manquants" });
-    return;
-  }
+  try {
+    const body = (req.body ?? {}) as {
+      token?: string;
+      email?: string;
+      newPassword?: string;
+      password?: string;
+      confirmPassword?: string;
+    };
 
-  const tokenHash = crypto.createHash("sha256").update(token).digest("hex");
-  const user = await findUserByResetToken(email, tokenHash);
-  if (!user || !user.resetTokenExpiresAt || user.resetTokenExpiresAt < new Date()) {
-    res.status(400).json({ error: "Lien invalide ou expiré" });
-    return;
-  }
+    const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : undefined;
+    const finalPassword = (body.newPassword ?? body.password)?.trim();
 
-  // Récupère l'historique des 3 derniers mots de passe (incluant actuel)
-  const lastHashes = await getLastPasswordHashes(user.id, PASSWORD_HISTORY_COUNT);
-  // On ajoute le hash actuel si pas déjà dedans :
-  if (user.password) lastHashes.unshift(user.password);
-
-  // Refuser si le nouveau mdp matche l'un des anciens
-  for (const oldHash of lastHashes.slice(0, PASSWORD_HISTORY_COUNT)) {
-    const same = await bcrypt.compare(newPassword, oldHash);
-    if (same) {
-      res.status(409).json({ error: "Vous avez déjà utilisé ce mot de passe récemment." });
+    if (!email) {
+      res.status(400).json({ error: "Paramètres manquants: email requis." });
       return;
     }
+    if (!validator.isEmail(email)) {
+      res.status(400).json({ error: "Email invalide." });
+      return;
+    }
+    if (!finalPassword) {
+      res.status(400).json({ error: "Paramètres manquants: mot de passe requis." });
+      return;
+    }
+    if (body.confirmPassword && body.confirmPassword !== finalPassword) {
+      res.status(400).json({ error: "Les mots de passe ne correspondent pas." });
+      return;
+    }
+    if (!validator.isLength(finalPassword, { min: 12 })) {
+      res.status(400).json({ error: "Le mot de passe doit contenir au moins 12 caractères." });
+      return;
+    }
+
+    // Helper: vérifie l'historique et met à jour
+    const checkHistoryAndUpdate = async (user: any) => {
+      // récupère les derniers hashes
+      let lastHashes: string[] = [];
+      try {
+        const raw = await getLastPasswordHashes(user.id, PASSWORD_HISTORY_COUNT);
+        if (Array.isArray(raw)) lastHashes = raw.filter((h: any) => typeof h === "string");
+      } catch (e) {
+        console.error("getLastPasswordHashes error:", e);
+      }
+
+      // construit la liste à comparer (ancien + historique)
+      const compareList: string[] = [];
+      if (typeof user.password === "string" && user.password.length > 0) {
+        compareList.push(user.password);
+      }
+      for (const h of lastHashes) {
+        if (typeof h === "string" && h.length > 0) compareList.push(h);
+      }
+
+      // refuse si réutilisé récemment
+      for (const oldHash of compareList.slice(0, PASSWORD_HISTORY_COUNT)) {
+        try {
+          if (await bcrypt.compare(finalPassword!, oldHash)) {
+            return { ok: false as const, status: 409, error: "Vous avez déjà utilisé ce mot de passe récemment." };
+          }
+        } catch (e) {
+          console.error("bcrypt.compare error:", e);
+        }
+      }
+
+      const newHash = await bcrypt.hash(finalPassword!, BCRYPT_ROUNDS);
+
+      // archive l'ancien si présent
+      if (typeof user.password === "string" && user.password.length > 0) {
+        try { await addPasswordToHistory(user.id, user.password); }
+        catch (e) { console.error("addPasswordToHistory error:", e); }
+      }
+
+      await updateUserPassword(user.id, newHash);
+      return { ok: true as const };
+    };
+
+    // ----- Flux 1 : avec token -----
+    if (body.token && body.token.trim() !== "") {
+      const tokenHash = crypto.createHash("sha256").update(body.token).digest("hex");
+
+      let user: any;
+      try {
+        user = await findUserByResetToken(email, tokenHash);
+      } catch (e) {
+        console.error("findUserByResetToken error:", e);
+        res.status(500).json({ error: "Erreur serveur." });
+        return;
+      }
+
+      if (!user || !user.resetTokenExpiresAt || user.resetTokenExpiresAt < new Date()) {
+        res.status(400).json({ error: "Lien invalide ou expiré" });
+        return;
+      }
+
+      const result = await checkHistoryAndUpdate(user);
+      if (!result.ok) {
+        res.status(result.status).json({ error: result.error });
+        return;
+      }
+
+      try { await clearResetTokenForUser(user.id); }
+      catch (e) { console.error("clearResetTokenForUser error:", e); }
+
+      res.status(200).json({ ok: true });
+      return;
+    }
+
+    // ----- Flux 2 : sans token (email saisi) -----
+    let user: any;
+    try {
+      user = await findUserByEmail(email);
+    } catch (e) {
+      console.error("findUserByEmail error:", e);
+      res.status(500).json({ error: "Erreur serveur." });
+      return;
+    }
+
+    // privacy: ne révèle pas si l'email existe
+    if (!user) {
+      res.status(200).json({ ok: true });
+      return;
+    }
+
+    const result = await checkHistoryAndUpdate(user);
+    if (!result.ok) {
+      res.status(result.status).json({ error: result.error });
+      return;
+    }
+
+    res.status(200).json({ ok: true });
+  } catch (e) {
+    console.error("resetPassword fatal error:", e);
+    res.status(500).json({ error: "Erreur serveur." });
   }
-
-  // Tout est ok → hasher, maj user, archiver l'ancien
-  const newHash = await bcrypt.hash(newPassword, BCRYPT_ROUNDS);
-
-  // Archiver l'ancien si présent
-  if (user.password) {
-    await addPasswordToHistory(user.id, user.password);
-  }
-
-  await updateUserPassword(user.id, newHash);
-  await clearResetTokenForUser(user.id);
-
-  res.status(200).json({ ok: true });
-  return;
 };

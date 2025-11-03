@@ -28,8 +28,9 @@ const Header: React.FC = () => {
   }, [open]);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    setIsLoggedIn(!!token);
+    // Vérifie la présence de userId pour l'état de connexion
+    const userId = localStorage.getItem("userId");
+    setIsLoggedIn(!!userId);
 
     const loadBooks = async () => {
       try {
